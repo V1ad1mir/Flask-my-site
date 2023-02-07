@@ -5,8 +5,7 @@
 {% block content%}
 <div class="header_block">
     <span class="logo">
-        <img class ="logo_image" src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">
-        <h1>Map</h1>
+        <img class ="logo_image" src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">    
     </span>
     <span class="form">
         <form>
@@ -36,5 +35,9 @@
     {% block base %}
     {% endblock %}
     </div>
-    <div class="bottom_block">Div</div>
+    <div class="bottom_block">
+        Div
+        <spin>language</spin>
+
+    </div>
 {% endblock %}
