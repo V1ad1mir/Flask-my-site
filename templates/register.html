@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block base %}
+<form class = 'register_form' method="post">
+    <input type="text" name="username" placeholder="Username" autocomplete="off" required/>
+    <BR>
+    <input type="text" name="mail" placeholder="E-mail" autocomplete="off" required/>
+    <BR>
+    <input type="password" name="password" placeholder="Enter your password" required/>
+    <BR>
+    <input type="password" name="confirm_password" placeholder="Reenter your password"/ required>
+    <BR>
+    <input type="submit" />
+</form>
+
+{% endblock %}
