@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block base %}
+<h1>Create new question form</h1>
+<span class="q_form">
+    <form method="post">
+        <label for="fname">Email:</label><br>
+        <input type="text" name="email" value="John"><br>
+        <label for="lname">Password:</label><br>
+        <input type="password" name="pw" value="123456"><br><br>
+        <input type="submit" value="Login">
+    </form> 
+{% endblock %}

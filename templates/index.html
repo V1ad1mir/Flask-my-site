@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block base %}
 <h1>Welcome</h1>
-<BR>
-<BR>
+
+Seccion: {{session['username']}}
+
 {% for user in users %}
-    <h1>
-    {{user[0]}}, {{user[1]}}, {{user[2]}}
-    </h1>
     <BR>
+    <BR>
+    <h1>
+    {{user.name}}, {{user.mail}}, {{user.password}}
+    </h1>
     <BR>
     <BR>
 {% endfor %}

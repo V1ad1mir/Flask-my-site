@@ -4,6 +4,7 @@
 }
 
 body {
+    background-color: #646464;
     color: aliceblue;
     display: flex;
     flex-direction: column;
@@ -78,6 +79,13 @@ ul.menu{
     text-decoration: none;
 }
 
+.new_travel_div{
+    flex: 0 1 auto;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
 .logo_image{
     width: 200%;
 }
@@ -103,12 +111,14 @@ ul.menu{
     float: right;
 }
 
-.div2, .div3{
-    text-align: center;
-    
-    min-width: 300px;
+.content{
     margin-left: 20%;
     margin-right: 20%;
+}
+
+.div2, .div3{
+    text-align: center;
+    min-width: 300px;
 }
 
 .div2{
@@ -116,9 +126,6 @@ ul.menu{
     background-color: #e8631c;
 }
 
-.div3{
-    background-color: #646464;
-}
 
 .bottom_block{
     flex-shrink: 0;

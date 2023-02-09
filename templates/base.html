@@ -5,18 +5,31 @@
 {% block content%}
 <div class="header_block">
     <span class="logo">
-        <img class ="logo_image" src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">    
-    </span>
-    <span class="form">
-        <form>
-            <label for="fname">Email:</label><br>
-            <input type="text" id="fname" name="fname" value="John"><br>
-            <label for="lname">Password:</label><br>
-            <input type="password" id="lname" name="lname" value="Doe"><br><br>
-            <input type="submit" value="Login">
-        </form> 
-        <a href="/register">Join Voyajer Book</a>
-        <a href="#">Forget password?</a>
+        <a href = "/"><img class ="logo_image"  src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">    
+        </a>
+        </span>
+        {% if session['username'] %}
+        <span class="form">
+            <h3>Welcome back</h3>
+            <h2>{{session['username']}}</h2>
+            <form action="/out">
+                <input type="submit" value="Log Out" />
+            </form>
+        </span> 
+        {% else %}
+        <span class="form">
+            <form method="post">
+                <label for="fname">Email:</label><br>
+                <input type="text" name="email" value="John"><br>
+                <label for="lname">Password:</label><br>
+                <input type="password" name="pw" value="123456"><br><br>
+                <input type="submit" value="Login">
+            </form> 
+            <a href="/register">Join Voyajer Book</a>
+            <a href="#">Forget password?</a>
+        {% endif %}
+
+    
     </span>
 </div>
 <div class="menu_block">
@@ -28,12 +41,15 @@
 
 </div>
 <div class="div2">
-<button class="ask_for_help">ask_for_help</button>
-<button class="btn_build_map">btn_build_list</button>
+<a href="/change_list"><button class="btn_build_map">create/change my list</button></a>
+<a href="/question"><button class="ask_for_help">ask other users about him travels</button></a>
+
 </div>
 <div class="div3">
+    <div class="content">
     {% block base %}
     {% endblock %}
+    </div>
     </div>
     <div class="bottom_block">
         Div
