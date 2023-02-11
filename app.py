@@ -33,6 +33,7 @@ def check_user():
     result_value = cursor.execute("SELECT * FROM users WHERE mail = %s AND password = %s", (mail,password) )
     if(result_value==1):
         session['username']=mail
+        session['ip_address'] = request.remote_addr
         return True
 
 @app.route('/change_list', methods=['GET', 'POST'])    

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% block head%}
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
+<script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
+<link id="stylesheet" rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
 {% endblock %}
 {% block content%}
 <div class="header_block">
@@ -12,9 +14,18 @@
         <span class="form">
             <h3>Welcome back</h3>
             <h2>{{session['username']}}</h2>
-            <form action="/out">
-                <input type="submit" value="Log Out" />
-            </form>
+            <h2>{{session['ip_address']}}</h2>
+            
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                  <a href="/out">Log Out</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                </div>
+              </div>
         </span> 
         {% else %}
         <span class="form">
@@ -47,13 +58,9 @@
 </div>
 <div class="div3">
     <div class="content">
-    {% block base %}
-    {% endblock %}
+        {% block base %}
+        {% endblock %}
     </div>
-    </div>
-    <div class="bottom_block">
-        Div
-        <spin>language</spin>
-
-    </div>
+</div>
+    {% include  'bottom_block.html' %}
 {% endblock %}
