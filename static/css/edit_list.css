@@ -1,0 +1,12 @@
+.new_travel_div{
+    width: 100%;
+}
+
+.new_travel_div input
+{
+    width: 120px;
+    padding: 3px;
+    margin: 10px 2px;
+    color: #659DBD;
+    font-size:17px;
+}

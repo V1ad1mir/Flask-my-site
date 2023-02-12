@@ -4,29 +4,34 @@
 }
 
 body {
-    background-color: #646464;
-    color: aliceblue;
+    background-color: #FBEEC1;
+    color: #659DBD;
     display: flex;
     flex-direction: column;
 }
 
 .ask_for_help, .btn_build_map  {
     background-color: transparent;
-    color: #e7e7e7;
-    border: 2px solid #e7e7e7;
-    padding: 15px 32px;
+    color: #659DBD;
+    border: 2px solid #659DBD;
+    padding: 15px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition: all 0.5s ease-out;
+    font-size: 18px;
+    margin: 4px 4px;
+    
 }
 
 .ask_for_help:hover, .btn_build_map:hover{
-    transform: scale(1.2);
-    background-color: rgba(255, 0, 0, 0.5);
+    transform: scale(1.05);
+    border-color: #BC986A;
+    color: white;
+    background-color: #BC986A
+}
+
+.ask_for_help:hover, .btn_build_map:hover, .submit_btn:hover{
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .register_form{
@@ -49,70 +54,93 @@ body {
 }
 
 .form a {
-    font: normal 65% 'trebuchet ms', sans-serif;
-    color: #fff;
+    margin: 4px 5px;
+    font: normal 87% 'trebuchet ms', sans-serif;
+    color: #BC986A;
     text-decoration: none;
 }
 
-.form a:hover, .menu a:hover{
-    color: #e8631c;
+.form a:hover{
+    font-weight: bold;
+    color: #659DBD;
 }
 
 .menu_block, .bottom_block{
     text-align: center;
-    background-color: #3b3b3b;
+    background-color: #659DBD;
 }
 
 ul.menu{
-    padding-bottom: 10px;
     display: inline-block;
 }
 
 .menu li{
     float: left;
-    padding: 0 0 0 9px;
     list-style: none;
-    margin: 1px 2px 0 0;
+    padding: 2px 20px 0 20px;
 }
 
 .menu li a{
-    font: normal 100% 'trebuchet ms', sans-serif;
+    color: #FBEEC1;
+    font: bold 120% 'trebuchet ms', sans-serif;
     display: block;
-    /* make no-block to block, like div */
     height: 20px;
-    padding: 20px 90px 5px 28px;
-    color: #fff;
+    padding: 8px 10px 8px 10px;
     text-decoration: none;
 }
 
-.new_travel_div{
-    flex: 0 1 auto;
-    display: flex;
-    flex-flow: column;
-    height: 100%;
+.menu li a:hover{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    color: white !important;
 }
 
+
 .logo_image{
-    width: 200%;
+    width: 170%;
 }
 
 .header_block{
     flex-shrink: 0;
-    background-color: rgb(8, 59, 78);
-    background-image: linear-gradient(to right, white , #e3d63f, #e8631c);
+    
 }
 
 .logo, .form{
     background: transparent;
-    color: white;
-    padding: 10px 10px 2px 10px;
+    color: #659DBD;
+    /* color: #BC986A; */
+    padding: 5px 1px 5px 10px;
+}
+
+.signin *{
+    margin-left: auto;
+    margin-right: auto;
+    display:block; 
+    color: #659DBD;    
 }
 
 .logo{
     float: left; 
 }
 
+
+.submit_btn, .ask_for_help, .btn_build_map, .dropdown .dropbtn{
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.5s ease-out;
+}
+
+.submit_btn {
+    margin-top: 5px;
+    padding: 4px 25px 4px 25px;
+    font: normal 100% 'trebuchet ms', sans-serif;
+    background-color: #659DBD;
+    border: none;
+    color: white;
+    display: inline-block;
+}
+
 .form{
+    text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     float: right;
 }
@@ -128,12 +156,11 @@ ul.menu{
 }
 
 .div2{
-    padding: 20px;
-    background-color: #e8631c;
+    padding: 18px;
 }
 
-
 .bottom_block{
+    color: #FBEEC1;
     flex-shrink: 0;
     width: 100%;
     position: absolute;
@@ -142,7 +169,8 @@ ul.menu{
 }
 
 .dropdown {
-    float: left;
+    color: #659DBD;
+    margin-right: 20px;
     overflow: hidden;
   }
   
@@ -150,15 +178,15 @@ ul.menu{
     font-size: 16px;  
     border: none;
     outline: none;
-    color: white;
-    padding: 14px 16px;
+    color: #659DBD;
+    padding: 5px 10px;
     background-color: inherit;
     font-family: inherit;
-    margin: 0;
+    margin: 3px;
   }
   
    .dropdown:hover .dropbtn {
-    background-color: red;
+    background-color: #659DBD;
   }
   
   .dropdown-content {
@@ -189,19 +217,62 @@ ul.menu{
 
 
   .mobile-mode{
-    background-color: #f70000;
-    font-size: medium;
-    margin: 0%;
+   
 }
 
+::placeholder { 
+    color: #BC986A;
+    opacity: 1; 
+  }
+
+
+
 @media (max-width: 770px) {
-    h1 {
-      font-size: 35px;
+    .logo::after{
+        
+        content: "\a";
+        white-space: pre;
     }
 
+    .logo{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .menu li{
+        padding: 0;
+    }
+
+    .menu li a{
+        color: #FBEEC1;
+        font: bold 120% 'trebuchet ms', sans-serif;
+        height: 30px;
+        padding: 3px 9px;
+        text-decoration: none;
+    } 
+
     .header_block{
-        flex-shrink: 1;
-        background-color: rgb(117, 127, 130);
+        justify-content: center;
+        text-align: center;
+        font: normal 110% 'trebuchet ms', sans-serif;
+
+    }
+
+
+    .form{
+        float: left;
+    }
+
+
+
+    .signin *{
+        display:inline; 
+    }
+   
+
+    h1 {
+      font-size: 35px;
     }
 
     .register_form{
@@ -214,19 +285,18 @@ ul.menu{
     }
 
     .logo_image{
-        width: 150%;
+        width: 100%;
+        
+        margin-left: auto;
+        margin-right: auto;
+        
+        padding-top: 10px; 
     }
 
-    .ask_for_help, .btn_build_map  {
-        border: 3px solid #e7e7e7;
-        padding: 1%;
-        font-size: 18px;
-        margin: 0 1px;
-    }
 
     .content{
-        margin-left: 20%;
-        margin-right: 20%;
+        margin-left: 10%;
+        margin-right: 10%;
     }
     
     .div2, .div3{

@@ -1,0 +1,33 @@
+.animated-object {
+    position: absolute;
+    left: 0;
+    transform: translateY(-50%);
+    transform: rotate(90deg);
+    animation: move-right 8s ease-in-out forwards;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes move-right {
+    0% {
+      left: 0;
+      opacity: 1;
+    }
+    40% {
+      left: 50%;
+      opacity: 0.2;
+    }
+
+    40% {
+      left: 50%;
+      opacity: 0;
+    }
+
+    60% {
+      left: 50%;
+      opacity: 0.2;
+    }
+    100% {
+      left: 95%;
+      opacity: 1;
+    }
+  }
