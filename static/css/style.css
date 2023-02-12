@@ -3,31 +3,54 @@
     padding: 0;
 }
 
+:root {
+    --primary-color: #659DBD;
+    --secondary-color: #FBEEC1;
+    --tertiary-color: #BC986A;
+    
+}
+
 body {
-    background-color: #FBEEC1;
-    color: #659DBD;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     display: flex;
     flex-direction: column;
 }
 
 .ask_for_help, .btn_build_map  {
     background-color: transparent;
-    color: #659DBD;
-    border: 2px solid #659DBD;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
     padding: 15px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 18px;
     margin: 4px 4px;
-    
 }
+
+.search_box {
+    text-align: end;
+    display: inline-block;
+    position: relative;
+    /* left: 30%; */
+    /* transform: translateX(-100%); */
+}
+
+.search_form *{
+    width: 180px;
+    padding: 3px;
+    margin: 10px 2px;
+    font-size:17px;
+}
+
+
 
 .ask_for_help:hover, .btn_build_map:hover{
     transform: scale(1.05);
-    border-color: #BC986A;
+    border-color: var(--tertiary-color);
     color: white;
-    background-color: #BC986A
+    background-color: var(--tertiary-color);
 }
 
 .ask_for_help:hover, .btn_build_map:hover, .submit_btn:hover{
@@ -56,18 +79,18 @@ body {
 .form a {
     margin: 4px 5px;
     font: normal 87% 'trebuchet ms', sans-serif;
-    color: #BC986A;
+    color: var(--tertiary-color);
     text-decoration: none;
 }
 
 .form a:hover{
     font-weight: bold;
-    color: #659DBD;
+    color: var(--primary-color);
 }
 
 .menu_block, .bottom_block{
     text-align: center;
-    background-color: #659DBD;
+    background-color: var(--primary-color);
 }
 
 ul.menu{
@@ -81,7 +104,7 @@ ul.menu{
 }
 
 .menu li a{
-    color: #FBEEC1;
+    color: var(--secondary-color);
     font: bold 120% 'trebuchet ms', sans-serif;
     display: block;
     height: 20px;
@@ -106,8 +129,7 @@ ul.menu{
 
 .logo, .form{
     background: transparent;
-    color: #659DBD;
-    /* color: #BC986A; */
+    color: var(--primary-color);
     padding: 5px 1px 5px 10px;
 }
 
@@ -115,7 +137,7 @@ ul.menu{
     margin-left: auto;
     margin-right: auto;
     display:block; 
-    color: #659DBD;    
+    color: var(--primary-color);    
 }
 
 .logo{
@@ -129,11 +151,11 @@ ul.menu{
     transition: all 0.5s ease-out;
 }
 
-.submit_btn {
+.submit_btn  {
     margin-top: 5px;
     padding: 4px 25px 4px 25px;
     font: normal 100% 'trebuchet ms', sans-serif;
-    background-color: #659DBD;
+    background-color: var(--primary-color);
     border: none;
     color: white;
     display: inline-block;
@@ -160,7 +182,7 @@ ul.menu{
 }
 
 .bottom_block{
-    color: #FBEEC1;
+    color: var(--secondary-color);
     flex-shrink: 0;
     width: 100%;
     position: absolute;
@@ -169,7 +191,7 @@ ul.menu{
 }
 
 .dropdown {
-    color: #659DBD;
+    color: var(--primary-color);
     margin-right: 20px;
     overflow: hidden;
   }
@@ -178,7 +200,7 @@ ul.menu{
     font-size: 16px;  
     border: none;
     outline: none;
-    color: #659DBD;
+    color: var(--primary-color);
     padding: 5px 10px;
     background-color: inherit;
     font-family: inherit;
@@ -186,7 +208,7 @@ ul.menu{
   }
   
    .dropdown:hover .dropbtn {
-    background-color: #659DBD;
+    background-color: var(--primary-color);
   }
   
   .dropdown-content {
@@ -221,7 +243,7 @@ ul.menu{
 }
 
 ::placeholder { 
-    color: #BC986A;
+    color: var(--tertiary-color);
     opacity: 1; 
   }
 
@@ -245,7 +267,7 @@ ul.menu{
     }
 
     .menu li a{
-        color: #FBEEC1;
+        color: var(--secondary-color);
         font: bold 120% 'trebuchet ms', sans-serif;
         height: 30px;
         padding: 3px 9px;
@@ -286,10 +308,8 @@ ul.menu{
 
     .logo_image{
         width: 100%;
-        
         margin-left: auto;
         margin-right: auto;
-        
         padding-top: 10px; 
     }
 

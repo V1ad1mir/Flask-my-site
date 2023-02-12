@@ -2,11 +2,22 @@
     width: 100%;
 }
 
-.new_travel_div input
+.new_travel_div input, .q_form input
 {
     width: 120px;
     padding: 3px;
     margin: 10px 2px;
     color: #659DBD;
     font-size:17px;
+}
+
+.q_form *{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    
+}
+
+.q_form input[type="submit"]{
+   display: inline-block; 
 }
