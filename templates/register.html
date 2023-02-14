@@ -2,14 +2,13 @@
 {% block base %}
 <form class = 'register_form' method="post">
     <input type="text" name="username" placeholder="Username" autocomplete="off" required/>
-    <BR>
     <input type="text" name="mail" placeholder="E-mail" autocomplete="off" required/>
-    <BR>
-    <input type="password" name="password" placeholder="Enter your password" required/>
-    <BR>
-    <input type="password" name="confirm_password" placeholder="Reenter your password"/ required>
-    <BR>
-    <input type="submit" />
+    <i class="far fa-eye" id="toggle1" style="margin-left: -30px; cursor: pointer;"></i>
+    <input type="password"  id = "password1" placeholder="Password" autocomplete="off "name="password" placeholder="Enter your password" required />
+    <i class="far fa-eye"  id="toggle2" style="margin-left: -30px; cursor: pointer;"></i>
+    <input type="password" id = "password2" name="confirm_password" placeholder="Reenter your password"/ required>
+    <input type="checkbox" id="terms" name="terms" required>
+    <label for="terms">I have read and agree to the terms of service and privacy policy.</label></span>
+    <input class="submit_btn" type="submit" />
 </form>
-
 {% endblock %}

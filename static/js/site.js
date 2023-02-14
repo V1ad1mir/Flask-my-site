@@ -1,14 +1,32 @@
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
+const icon = document.getElementById('toggle1');
+let password = document.getElementById('password1');
 
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
-  dropdownContent.style.display = "block";
+/* Event fired when <i> is clicked */
+icon.addEventListener('click', function() {
+  if(password.type === "password") {
+    password.type = "text";
+    icon.classList.add("fa-eye-slash");
+    icon.classList.remove("fa-eye");
   }
-  });
-}
+  else {
+    password.type = "password";
+    icon.classList.add("fa-eye");
+    icon.classList.remove("fa-eye-slash");
+  }
+});
+
+const icon2 = document.getElementById('toggle2');
+let password2 = document.getElementById('password2');
+
+icon2.addEventListener('mousedown', function() {
+  if(password2.type === "password") {
+    password2.type = "text";
+    icon2.classList.add("fa-eye-slash");
+    icon2.classList.remove("fa-eye");
+  }
+  else {
+    password2.type = "password";
+    icon2.classList.add("fa-eye");
+    icon2.classList.remove("fa-eye-slash");
+  }
+});

@@ -1,14 +1,15 @@
-from flask import Flask,render_template,request,session,redirect
+from flask import Flask,render_template,request,session,redirect,flash
 from flask_mysqldb import MySQL
 import yaml
 import os
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+import review
 
 app = Flask(__name__)
 
 #DB configuration
-x = open('db.yaml')
-db = yaml.safe_load(x)
+db = yaml.safe_load(open('db.yaml'))
 
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
@@ -18,6 +19,38 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 app.config['SECRET_KEY'] = os.urandom(24)
+
+# This is the folder where the uploaded photos will be saved
+app.config['UPLOAD_FOLDER'] = 'static/uploads' 
+
+
+
+
+@app.route('/reviews', methods=['GET', 'POST'])
+def reviews():
+    if request.method == 'POST':
+        # Get the data from the form
+        country = request.form['country'] 
+        text = request.form['review'] 
+        photo = request.files['photo'] 
+        photo_filename = secure_filename(photo.filename) 
+        
+        # Save the photo to the upload folder
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename)) 
+        
+        # Save the country name, review text, and photo filename to the database
+        review.add_review(country, text, photo_filename)
+        
+    # This function retrieves all the reviews from the database
+    all_reviews = review.get_all_reviews() 
+    return render_template('reviews.html', reviews=all_reviews)
+
+@app.route('/review/<int:review_id>/rate', methods=['POST'])
+def rate_review(review_id):
+    rating = int(request.form['rating'])
+    review.add_rating(review_id, rating)
+    flash('Rating added successfully!')
+    return redirect(url_for('reviews'))
 
 
 @app.route('/out')
@@ -95,14 +128,6 @@ def photos():
     go to photos page
     '''
     return render_template('photos.html')
-
-@app.route('/reviews')
-def reviews():
-    '''
-    go to reviwes page
-    '''
-    return render_template('reviews.html')
-
 
 
 if __name__ == '__main__':

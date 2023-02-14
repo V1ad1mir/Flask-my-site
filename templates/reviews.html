@@ -1,4 +1,26 @@
 {% extends 'base.html' %}
 {% block base %}
-<h1>Reviwes</h1>
+<h1>Travel Reviews</h1>
+    {% if reviews %}
+      <ul>
+        {% for review in reviews %}
+          <li>
+            
+                {% if review.photo %}
+              <img width="300" height="300" src="{{ url_for('static', filename='uploads/' + review.photo) }}" alt="{{ review.country }} photo">
+            {% endif %}
+             
+                <h2>{{ review.country }}</h2>
+            <p>{{ review.text }}</p>
+            
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No reviews yet.</p>
+    {% endif %}
+
+
+
+{% include 'new_review.html' %}
 {% endblock %}
