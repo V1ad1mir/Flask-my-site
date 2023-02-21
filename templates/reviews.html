@@ -1,18 +1,84 @@
 {% extends 'base.html' %}
 {% block base %}
+<style>
+
+</style>
+
 <h1>Travel Reviews</h1>
+  
     {% if reviews %}
+    <div class="filter"
+
+    <form method="GET" action="{{ url_for('reviews') }}" class="form-inline">
+      <div class="form-group mr-2>
+          <label for="sort_by" class="mr-2">Sort by:</label>
+          <select name="sort_by" class="form-control" onchange="this.form.submit()">
+              <option value="">Select sort option</option>
+              <option value="date_asc" {% if request.args.get('sort_by') == 'date_asc' %}selected{% endif %}>Date (oldest first)</option>
+              <option value="date_desc" {% if request.args.get('sort_by') == 'date_desc' %}selected{% endif %}>Date (newest first)</option>
+              <option value="name_asc" {% if request.args.get('sort_by') == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
+              <option value="name_desc" {% if request.args.get('sort_by') == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
+          </select>
+      </div>
+      <div class="form-group mr-2">
+          <label for="country_filter" class="mr-2">Filter by country:</label>
+          <input type="text" name="country_filter" value="{{ request.args.get('country_filter') }}" class="form-control" placeholder="Enter country name">
+          <button class="blue_btn" type="submit" class="btn btn-primary">Filter</button>
+      </div>
+  </form>
+  <br>
+  </div>
+
+
       <ul>
         {% for review in reviews %}
-          <li>
-            
-                {% if review.photo %}
-              <img width="300" height="300" src="{{ url_for('static', filename='uploads/' + review.photo) }}" alt="{{ review.country }} photo">
-            {% endif %}
-             
-                <h2>{{ review.country }}</h2>
-            <p>{{ review.text }}</p>
-            
+          <li class="review-list">
+            <section id="rev">
+            <header>
+                <h1>{{ review.country }}</h1>
+            </header>
+                {% if review.photo != 'NULL' %}
+                <nav>
+                <img class="image" src="{{ url_for('static', filename='uploads/' + review.photo) }}" alt="{{ review.country }} photo">
+                </nav>  
+                {% else %}
+                <img class="image" src="{{ url_for('static', filename='img/CoMxJBKz_4x.jpg') }}" alt="{{ review.country }} photo">
+                {% endif %}
+                <h2></h2>
+                <main>
+                      <p>{{ review.text }}</p>
+                </main>
+                <footer>
+                  <h3>Rating: {{ review.rating }}
+
+                  <form action="{{ url_for('rate_review', review_id=review.id) }}" method="POST">
+                    <select name="rating">
+                      <option value="1">1 star</option>
+                      <option value="2">2 stars</option>
+                      <option value="3">3 stars</option>
+                      <option value="4">4 stars</option>
+                      <option value="5">5 stars</option>
+                    </select>
+                    <input class="blue_btn" type="submit" value="Rate">
+                  </form>
+                  </h3>
+                  
+
+
+
+
+
+                  <p class = "author_text">Author: {{ review.author }}, Date: {{ review.date.strftime('%Y-%m-%d') }}</p>
+
+                  <span>
+                    
+                    <form action="{{ url_for('delete_review', review_id=review.id) }}" method="POST">
+                      <input type="submit" class="blue_btn" value="Delete this post">
+                    </form>
+                    </span>
+    
+                </footer>
+                </section>
           </li>
         {% endfor %}
       </ul>
@@ -21,6 +87,7 @@
     {% endif %}
 
 
+{% include 'new_review.html' %}  
 
-{% include 'new_review.html' %}
+
 {% endblock %}

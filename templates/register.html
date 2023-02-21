@@ -3,12 +3,29 @@
 <form class = 'register_form' method="post">
     <input type="text" name="username" placeholder="Username" autocomplete="off" required/>
     <input type="text" name="mail" placeholder="E-mail" autocomplete="off" required/>
-    <i class="far fa-eye" id="toggle1" style="margin-left: -30px; cursor: pointer;"></i>
-    <input type="password"  id = "password1" placeholder="Password" autocomplete="off "name="password" placeholder="Enter your password" required />
+    
     <i class="far fa-eye"  id="toggle2" style="margin-left: -30px; cursor: pointer;"></i>
+    <input type="password"  id = "password1" placeholder="Password" autocomplete="off "name="password" placeholder="Enter your password" required />
+    <i class="far fa-eye" id="toggle1" style="margin-left: -30px; cursor: pointer;"></i>
+    
     <input type="password" id = "password2" name="confirm_password" placeholder="Reenter your password"/ required>
+    <span class="form_date">
+        <label for="date_of_birth">Date of Birth:</label>
+    <input type="date" name="date_of_birth" class="form-control">
+    </span>
+    <span class="form_date">
+        <label for="country">Your country of residence.</label>
+        <input type="text" name="country" class="form-control">
+    </span>
+    <div class="form-group">
+        <label for="avatar">Avatar:</label>
+        <input type="file" name="avatar" class="form-control-file">
+    </div>
+        
+
     <input type="checkbox" id="terms" name="terms" required>
     <label for="terms">I have read and agree to the terms of service and privacy policy.</label></span>
-    <input class="submit_btn" type="submit" />
+    
+    <input class="blue_btn" type="submit" />
 </form>
 {% endblock %}

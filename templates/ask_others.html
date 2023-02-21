@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
 {% block base %}
+{% if all_questions %}
+      <ul>
+        {% for q in all_questions %}
+          
+          <h2>{{ q.question }}</h2>
+          <h3>{{ q.author_que }}</h3>
+            <p>{{ q.date }}</p>
+            {% if q.answer==None %}
+                This question is not has a answer.
+            {% else %}
+                {{q.answer }}
+            {% endif %}
+        {% endfor %}
+        </ul>
+{% else %}
+        <p>No questions yet.</p>
+{% endif %}
+
+
+
+
 <h1>Create new question form</h1>
 <div class="q_form">
-    <form>
-        <label for="text">Massage:</label>
-        <textarea name="textarea" style="width:350px;height:120px;"></textarea>
-        <input type="submit" name="submit" value="submit">
+    <form action="/new_question" method="post">
+        <label for="text">Question:</label>
+        <textarea class="big_text" id="text" name="question"></textarea>
+        <input class = "blue_btn" type="submit" name="submit" value="submit">
     </form>
 </div>
 {% endblock %}

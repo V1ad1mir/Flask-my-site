@@ -1,6 +1,6 @@
 
 {# action="{{ url_for('search') }}" #}
-<form class = "search_form" method="post">
-    <input type="text" placeholder="text for search" id="search" name="query">
-    <input class = "submit_btn" type="submit" value="Search">
+<form class = "search_form" >
+    <input type="text" style="visibility:hidden; width:0" placeholder="text for search" id="search_field" >
+    <input class = "blue_btn" id="search_btn" onclick="showInput(event)" type="submit" value="Search">
 </form>

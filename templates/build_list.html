@@ -1,28 +1,74 @@
 {% extends 'base.html' %}
 {% block base %}
-<h1>Create new travel</h1>
+
+{% if session['email'] %}
 <div class="new_travel_div">
-    <form method="post">
-        <input type="text" name="country" placeholder="country">
-        <input type="text" name="date" placeholder="date">
-        <input type="text" name="city" placeholder="city">
-        <input type="submit" value="Add">
-    </form>
+  <button class="blue_btn" style="width:200px" onclick="toggleForm()">+ Create new travel</button>
+  <form id="travel-form" style="display: none;" method="POST" action="/add_trip">
+    <table>
+      <tr>
+        <th>Country:</th>
+        <th>Month/Year:</th>
+        <th>Cities:</th>
+      </tr>
+      <tr>
+        <td><input type="text" name="country" required></td>
+        <td><input type="month" name="month_year" required></td>
+        <td><input type="text" name="cities" required></td>
+      </tr>
+      <tr>
+        <th>Duration(Days):</th>
+        <th>Budget(€):</th>
+        <th>Rating:</th>
+      </tr>
+      <tr>
+        <td><input type="number" name="duration" min="1" required></td>
+        <td><input type="number" step="100" min="100" name="budget" required></td>
+        <td><input type="number" name="rating" min="1" max="5" required></td>
+      </tr>
+    </table>
+    <input class="blue_btn" type="submit" value="Add Trip">
+  </form> 
 </div>
-<div class="travel_list">
-    <table id="dataTable">
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </table>
-      <br>
-      <button id="refreshButton">Refresh Data</button>
-    
+
+<div class="trips_table">
+  <table>
+    <tr>
+      <th>Select</th>
+      <th>Country</th>
+      <th>Month</th>
+      <th>Cities</th>
+      <th>Duration</th>
+      <th>Budget</th>
+      <th>Rating</th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  {% for row in data %}
+    <tr>
+      <td><input type="checkbox" name="select" value="{{row.d}}"></td>
+      <td><span id="country_{{row.d}}">{{row.country}}</span></td>
+      <td><span id="monthyear_{{row.d}}">{{row.month}}, {{row.year}}</span></td>
+      <td><span id="cities_{{row.d}}">{{row.cities}}</span></td>
+      <td><span id="duration_{{row.d}}">{{row.duration}}</span></td>
+      <td><span id="budget_{{row.d}}">{{row.budget}}</span></td>
+      <td><span id="rating_{{row.d}}">{{row.rating}}</span></td>
+
+      <td><button id="edit_button_{{row.d}}" class="blue_btn" onclick="edit({{row.d}})">Edit</button></td>
+      <td><button class="blue_btn" onclick="del({{row.d}})">Delete</button></td>
+    </tr>
+  {% endfor %}
+  </table>
+  
 </div>
+
+
+
+
+{% else %}
+<h1>Please sign in to add trip</h1>
+{% endif %}
+
 
 
 {% endblock %}

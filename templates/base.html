@@ -15,10 +15,10 @@
         <a href = "/"><img class ="logo_image"  src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">    
         </a>
         </span>
-        {% if session['username'] %}
+        {% if session['name'] %}
         <span class="form">
             <h3>Welcome back</h3>
-            <h2>{{session['username']}}</h2>
+            <h2>{{session['name']}}</h2>
             <h3>ip:{{session['ip_address']}}</h3>
             <div class="dropdown">
                 <button class="dropbtn">
@@ -35,12 +35,12 @@
         </span> 
         {% else %}
         <span class="form">
-            <form class = "signin" method="post">
+            <form class = "signin" action="/sign" method="post">
                 <label for="fname">Email:</label>
-                <input type="text" name="email" value="John">
+                <input type="text" name="email" placeholder="John" maxlength="25">
                 <label for="lname">Password:</label>
-                <input type="password" name="pw" value="123456">
-                <input class ="submit_btn" type="submit" value="Sign In">
+                <input type="password" name="pw" placeholder="123456">
+                <input class ="blue_btn" type="submit" value="Sign In">
             </form> 
             <a href="/register">Join Voyajer Book</a>
             <a href="#">Forget password?</a>
@@ -49,7 +49,7 @@
     
     </span>
 </div>
-<div class="menu_block">
+<div class="menu1_block">
     <ul class="menu">
         <li><a href="/map">My Voyajer Map</a></li>
         <li><a href="/photos">My Voyajer Photos</a></li>
@@ -57,7 +57,7 @@
     </ul>
     
 </div>
-<div class="div2">
+<div class="menu2_block">
     <a href="/change_list"><button class="btn_build_map">Edit country list</button></a>
     <a href="/question"><button class="ask_for_help">Community Question</button></a>
     <span class = "search_box">
@@ -70,6 +70,7 @@
         {% endblock %}
     </div>
 </div>
+
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
     {% include  'bottom_block.html' %}
 {% endblock %}
