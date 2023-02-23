@@ -1,529 +1,495 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
-:root {
-    --primary-color: #659DBD;
-    --secondary-color: #FBEEC1;
-    --tertiary-color: #BC986A;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh
-}
-
-.filter{
-    display: flex;
-}
-
-.filter *{
-    margin-left: auto;
-    margin-right:auto;
-    margin-top: 10px;
-    padding: 0 5px;
-}
-
-.ask_for_help, .btn_build_map  {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    padding: 3px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 4px 10px;
-}
-
-.search_box {
-    text-align: end;
-    display: inline-block;
-    /* position: relative; */
-    /* left: 30%; */
-    /* transform: translateX(-100%); */
-}
-
-.search_box, .ask_for_help, .btn_build_map{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-img.image{
-    border-radius: 8px;
-    border: 2px solid var(--primary-color);
-    max-width:250px;
-    max-height:250px;
-    width: auto;
-    height: auto;
-}
-
-.search_form *{
-    width: 180px;
-    padding: 3px;
-    margin: 10px 2px;
-    font-size:17px;
-}
-
-.big_text{
-    color: var(--primary-color);
-    font-size: 16px;
-    width:50%;
-    height:120px;
-}
-
-.ask_for_help:hover, .btn_build_map:hover{
-    transform: scale(1.05);
-    border-color: var(--tertiary-color);
-    color: white;
-    background-color: var(--tertiary-color);
-}
-
-.ask_for_help:hover, .btn_build_map:hover, .blue_btn:hover{
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-}
-
-.register_form{
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    padding: 20px;
-}
-
-.div3{
-    display: block;
-}
-
-.register_form input[type="text"],.register_form input[type="password"],.register_form input[type="submit"]{
-    width: 100%;
-    display: block;
-    border: 1px solid var(--primary-color);
-    border-radius: 12px;
-    line-height: 1.1;
-    height: 28px;
-    padding: 4px;
-    margin-bottom: 4px;
-    font-size: 18px;
-    
-}
-
-input[type="checkbox"]{
-    transform: scale(1.2);
-    border:none;
-    border-radius: 10%;
-    background-color: #bbbbbb;
-}
-
-.register_form i{  
-    margin-top: 10px;
-    float: right;
-}
-
-.form a {
-    margin: 4px 5px;
-    font: normal 87% 'trebuchet ms', sans-serif;
-    color: var(--tertiary-color);
-    text-decoration: none;
-}
-
-.form a:hover{
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.menu1_block, .bottom_block{
-    text-align: center;
-    background-color: var(--primary-color);
-}
-
-ul.menu{
-    display: inline-block;
-}
-
-.menu li{
-    float: left;
-    list-style: none;
-    padding: 2px 20px 0 20px;
-}
-
-.menu li a{
-    color: var(--secondary-color);
-    font: bold 120% 'trebuchet ms', sans-serif;
-    display: block;
-    height: 20px;
-    padding: 8px 10px 8px 10px;
-    text-decoration: none;
-}
-
-.menu li a:hover{
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-    color: white !important;
-}
-
-
-.logo_image{
-    width: 170%;
-}
-
-.header_block{
-    flex-shrink: 0;
-    
-}
-
-.logo, .form{
-    background: transparent;
-    color: var(--primary-color);
-    padding: 5px 1px 5px 10px;
-}
-
-.signin *{
-    margin-left: auto;
-    margin-right: auto;
-    display:block; 
-    color: var(--primary-color);    
-}
-
-.logo{
-    float: left; 
-}
-
-
-.blue_btn, .ask_for_help, .btn_build_map, .dropdown .dropbtn, .menu li a:hover{
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.5s ease-out;
-}
-
-.add_review{
-    margin-top: 30px;
-    margin-bottom: 70px;
-}
-
-.add_review span{
-    font: normal 100% 'trebuchet ms', sans-serif;
-    margin: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.form_date{
-    font-size: 120%;
-    display: block;
-    margin:10px 20px;
-}
-
-.terms{
-    display: block;
-}
-
-
-
-.form{
-    text-align: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    float: right;
-}
-
-.content{
-    margin-left: 20%;
-    margin-right: 20%;
-}
-
-.menu2_block, .div3{
-    text-align: center;
-    
-}
-
-.menu2_block{
-    padding: 6px;
-}
-
-.bottom_block{
-    margin-top: auto;
-    color: var(--secondary-color);
-    flex-shrink: 0;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    
-    padding: 20px  0 20px 0;
-}
-
-.dropdown {
-    color: var(--primary-color);
-    margin-right: 20px;
-    overflow: hidden;
+* {
+  margin:0;
+  padding:0
+  }
+  
+  :root {
+  --primary-color:#659DBD;
+  --secondary-color:#FBEEC1;
+  --tertiary-color:#BC986A
+  }
+  
+  :root.dark-theme {
+  --primary-color:#30475E;
+  --secondary-color:#CCC;
+  --tertiary-color:#D9B08C
+  }
+  
+  @font-face {
+  font-family:"Custom Font";
+  src:url(/static/fonts/hussarbdsuprcon.otf)
+  }
+  
+  #collapse {
+  display:flex;
+  display:none;
+  height:0;
+  justify-content:center;
+  margin-left:auto;
+  margin-right:auto;
+  opacity:0;
+  text-align:center;
+  transition:all .5s;
+  width:100%
+  }
+  
+  #collapse.show {
+  display:inline-block;
+  height:fit-content;
+  opacity:1;
+  overflow:visible
+  }
+  
+  #map_block {
+  border:1px solid #ccc;
+  border-radius:15px;
+  box-shadow:0 0 5px #ccc;
+  display:table-footer-group
+  }
+  
+  .add_review {
+  margin-bottom:70px;
+  margin-top:30px
+  }
+  
+  .add_review span {
+  display:block;
+  font:100% 'trebuchet ms',sans-serif;
+  margin:10px;
+  margin-left:auto;
+  margin-right:auto
+  }
+  
+  .ask_for_help,.btn_build_map {
+  background-color:transparent;
+  border:2px solid var(--primary-color);
+  color:var(--primary-color);
+  display:inline-block;
+  font-size:18px;
+  margin:4px 10px;
+  padding:3px 25px;
+  text-align:center;
+  text-decoration:none
+  }
+  
+  .ask_for_help:hover,.btn_build_map:hover {
+  background-color:var(--tertiary-color);
+  border-color:var(--tertiary-color);
+  color:#fff;
+  transform:scale(1.05)
+  }
+  
+  .ask_for_help:hover,.btn_build_map:hover,.blue_btn:hover {
+  box-shadow:rgba(0,0,0,0.15) 0 2px 8px
+  }
+  
+  .author_text {
+  float:right;
+  margin-right:15px
+  }
+  
+  .big_text {
+  color:var(--primary-color);
+  font-size:16px;
+  height:120px;
+  width:50%
+  }
+  
+  .blue_btn {
+  background-color:var(--primary-color);
+  border:none;
+  color:#fff;
+  display:inline-block;
+  font:100% 'trebuchet ms',sans-serif;
+  margin-top:5px;
+  padding:4px 25px
+  }
+  
+  .blue_btn,.ask_for_help,.btn_build_map,.dropdown .dropbtn,.menu li a:hover {
+  border-radius:12px;
+  text-decoration:none;
+  transition:all .5s ease-out
+  }
+  
+  .bottom_block {
+  bottom:0;
+  color:var(--secondary-color);
+  flex-shrink:0;
+  margin-top:auto;
+  padding:20px 0;
+  position:fixed;
+  width:100%
+  }
+  
+  .content {
+  margin:0 5%
+  }
+  
+  .div3,.terms,.dropdown:hover .dropdown-content,.review-list footer span {
+  display:block
+  }
+  
+  .dropdown {
+  color:var(--primary-color);
+  margin-right:20px;
+  overflow:hidden
   }
   
   .dropdown .dropbtn {
-    font-size: 16px;  
-    border: none;
-    outline: none;
-    color: var(--primary-color);
-    padding: 5px 10px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 3px;
-  }
-  
-   .dropdown:hover .dropbtn {
-    background-color: var(--primary-color);
+  background-color:inherit;
+  border:none;
+  color:var(--primary-color);
+  font-family:inherit;
+  font-size:16px;
+  margin:3px;
+  outline:none;
+  padding:5px 10px
   }
   
   .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+  background-color:#f9f9f9;
+  box-shadow:0 8px 16px 0 rgba(0,0,0,0.2);
+  display:none;
+  min-width:160px;
+  position:absolute;
+  z-index:1
   }
   
   .dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
+  color:#000;
+  display:block;
+  float:none;
+  padding:12px 16px;
+  text-align:left;
+  text-decoration:none
   }
   
   .dropdown-content a:hover {
-    background-color: #ddd;
+  background-color:#ddd
   }
   
-  .dropdown:hover .dropdown-content {
-    display: block;
+  .dropdown:hover .dropbtn {
+  background-color:var(--primary-color)
   }
-
-
-  .mobile-mode{
-   
-}
-
-::placeholder { 
-    color: var(--tertiary-color);
-    opacity: 1; 
+  
+  .error_message {
+  color:red;
+  font-size:18px
   }
-
-.content{
-    margin: 0 5%;
-}
-
-
-
-.review-list{
-    border-radius: 8px;
-    border: 2px solid var(--primary-color);
-    list-style: none;
-    background-color:white;
-    padding: 10px;
-    margin: 25px 0px;
+  
+  .filter {
+  display:flex
   }
-
- 
-
+  
+  .filter * {
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  padding:0 5px
+  }
+  
+  .form {
+  float:right;
+  font-family:'Trebuchet MS','Lucida Sans Unicode','Lucida Grande','Lucida Sans',Arial,sans-serif;
+  text-align:center
+  }
+  
+  .form a {
+  color:var(--tertiary-color);
+  font:87% 'trebuchet ms',sans-serif;
+  margin:4px 5px;
+  text-decoration:none
+  }
+  
+  .form a:hover {
+  color:var(--primary-color);
+  font-weight:700
+  }
+  
+  .form_date {
+  display:block;
+  font-size:120%;
+  margin:10px 20px
+  }
+  
+  .header_block {
+  flex-shrink:0
+  }
+  
+  .logo,.form {
+  background:transparent;
+  color:var(--primary-color);
+  padding:5px 1px 5px 10px
+  }
+  
+  .logo,.review-list footer h3 {
+  float:left
+  }
+  
+  .logo_image {
+  width:170%
+  }
+  
+  .menu li {
+  float:left;
+  list-style:none;
+  padding:2px 20px 0
+  }
+  
+  .menu li a {
+  color:var(--secondary-color);
+  display:block;
+  font:bold 120% 'trebuchet ms',sans-serif;
+  height:20px;
+  padding:8px 10px;
+  text-decoration:none
+  }
+  
+  .menu li a:hover {
+  box-shadow:rgba(0,0,0,0.16) 0 3px 6px,rgba(0,0,0,0.23) 0 3px 6px;
+  color:#fff!important
+  }
+  
+  .menu1_block,.bottom_block {
+  background-color:var(--primary-color);
+  text-align:center
+  }
+  
+  .menu2_block {
+  padding:6px
+  }
+  
+  .menu2_block,.div3,.trips_table {
+  text-align:center
+  }
+  
+  .new_travel_div * {
+  font-size:17px;
+  padding:3px;
+  width:120px
+  }
+  
+  .new_travel_div tr {
+  align-items:center
+  }
+  
+  .q_form * {
+  display:block;
+  margin-left:auto;
+  margin-right:auto
+  }
+  
+  .register_form {
+  display:inline-block;
+  margin-left:auto;
+  margin-right:auto;
+  padding:20px;
+  text-align:left
+  }
+  
+  .register_form i {
+  float:right;
+  margin-top:10px
+  }
+  
+  .register_form input[type="text"],.register_form input[type="password"],.register_form input[type="submit"] {
+  border:1px solid var(--primary-color);
+  border-radius:12px;
+  display:block;
+  font-size:18px;
+  height:28px;
+  line-height:1.1;
+  margin-bottom:4px;
+  padding:4px;
+  width:100%
+  }
+  
+  .review-list {
+  background-color:#fff;
+  border:2px solid var(--primary-color);
+  border-radius:8px;
+  list-style:none;
+  margin:25px 0;
+  padding:10px
+  }
+  
   .review-list #rev {
-  display: grid;
-  grid-template:
-  [header-left] "head head"  [header-right]
-  [main-left] "nav  main"  [main-right]
-  [footer-left] "nav  foot"  [footer-right]
-  / 250px 1fr;
-}
-
-.review-list header {
-margin: 5px 0;
-padding: 2px 0;
-font: bold 120% 'trebuchet ms', sans-serif;
-grid-area: head;
-}
-
-.review-list nav {
-grid-area: nav;
-}
-
-.review-list main {
-padding:20px;
-text-align: justify;
-grid-area: main;
-}
-
-
-.author_text{
-    float: right;
-    margin-right:15px;
-}
-
-.review-list footer span {
-  display: block;
+  display:grid;
+  grid-template:[header-left] "head head" [header-right] [main-left] "nav main" [main-right] [footer-left] "nav foot" [footer-right] / 250px 1fr
+  }
   
-}
-
-.review-list footer h3{
-    float: left;
-}
-
-.review-list footer {
-    margin-left: 15px;
-    grid-area: foot;
-}
-
-.blue_btn  {
-    margin-top: 5px;
-    padding: 4px 25px 4px 25px;
-    font: normal 100% 'trebuchet ms', sans-serif;
-    background-color: var(--primary-color);
-    border: none;
-    color: white;
-    display: inline-block;
-}
-
-.white_btn  {
-    margin-top: 5px;
-    padding: 4px 25px 4px 25px;
-    font: normal 100% 'trebuchet ms', sans-serif;
-    background-color: white;
-    border: none;
-    color: var(--primary-color);
-    display: inline-block;
-}
-
-.new_travel_div  {
-    margin: 20px;
-    display: inline-block;
-}
-
-.trips_table {
-    text-align: center;
-}
-
-.trips_table table{
-    font-size: x-large;
-    margin: 20px;
-    display: inline-block;
-}
-
-#map { 
-    height: 100%;
-    border-radius: 15px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 5px #ccc;
-}
-
-.trips_table table *{
-    padding: 8px;
-}
-
-
-
-.trips_table button{
-    font-size:15px;
-}
-
-
-
-.new_travel_div *
-{
-    width: 120px;
-    padding: 3px;
-    margin: 10px 2px;
-   
-    font-size:17px;
-}
-
-.q_form *{
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
-
-.q_form input[type="submit"]{
-   display: inline-block; 
-}
-
-
-
-@media (max-width: 770px) {
-
-    .big_text{
-        width: 85%;
-    }
-
-
-    .logo::after{
-        content: "\a";
-        white-space: pre;
-    }
-
-    .logo{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .menu li{
-        padding: 0;
-    }
-
-    .menu li a{
-        color: var(--secondary-color);
-        font: bold 120% 'trebuchet ms', sans-serif;
-        height: 30px;
-        padding: 3px 9px;
-        text-decoration: none;
-    } 
-
-    .header_block{
-        justify-content: center;
-        text-align: center;
-        font: normal 110% 'trebuchet ms', sans-serif;
-
-    }
-
-
-    .form{
-        float: left;
-    }
-
-
-
-    .signin *{
-        display:inline; 
-    }
-   
-
-    h1 {
-      font-size: 35px;
-    }
-
-    .register_form{
-       
-    }
-
-    .logo_image{
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 10px; 
-    }
-
-
-    .content{
-        margin-left: 30px;
-        margin-right: 30px;
-    }
-    
-    .menu2_block, .div3{
-        text-align: match-parent;
-    }
-    
-    
+  .review-list footer {
+  grid-area:foot;
+  margin-left:15px
+  }
+  
+  .review-list header {
+  font:bold 120% 'trebuchet ms',sans-serif;
+  grid-area:head;
+  margin:5px 0;
+  padding:2px 0
+  }
+  
+  .review-list main {
+  grid-area:main;
+  padding:20px;
+  text-align:justify
+  }
+  
+  .review-list nav {
+  grid-area:nav
+  }
+  
+  .search_box {
+  display:inline-block;
+  text-align:end
+  }
+  
+  .search_box,.ask_for_help,.btn_build_map,.travel-form {
+  margin-left:auto;
+  margin-right:auto
+  }
+  
+  .search_form * {
+  font-size:17px;
+  margin:10px 2px;
+  padding:3px;
+  width:180px
+  }
+  
+  .signin * {
+  color:var(--primary-color);
+  display:block;
+  margin-left:auto;
+  margin-right:auto
+  }
+  
+  .trips_table button {
+  font-size:15px
+  }
+  
+  .trips_table table {
+  display:inline-block;
+  font-size:x-large;
+  margin:20px
+  }
+  
+  .trips_table table * {
+  padding:8px
+  }
+  
+  .white_btn {
+  background-color:#fff;
+  border:none;
+  color:var(--primary-color);
+  display:inline-block;
+  font:100% 'trebuchet ms',sans-serif;
+  margin-top:5px;
+  padding:4px 25px
+  }
+  
+  ::placeholder {
+  color:var(--tertiary-color);
+  opacity:1
+  }
+  
+  body {
+  background-color:var(--secondary-color);
+  color:var(--primary-color);
+  display:flex;
+  flex-direction:column;
+  font-family:"Custom Font",Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  text-align:center;
+  word-spacing:7px
+  }
+  
+  div.center {
+  margin:auto
+  }
+  
+  img.image {
+  border:2px solid var(--primary-color);
+  border-radius:8px;
+  height:auto;
+  width:auto
+  }
+  
+  img.max_width {
+  max-height:250px;
+  max-width:250px
+  }
+  
+  input[type="checkbox"] {
+  background-color:#bbb;
+  border:none;
+  border-radius:10%;
+  transform:scale(1.2)
+  }
+  
+  ul.menu,.q_form input[type="submit"],#travel-form {
+  display:inline-block
+  }
+  
+  @media (max-width: 770px) {
+  .big_text {
+  width:85%
+  }
+  
+  .content {
+  margin-left:30px;
+  margin-right:30px
+  }
+  
+  .form {
+  float:left
+  }
+  
+  .header_block {
+  font:110% 'trebuchet ms',sans-serif;
+  justify-content:center;
+  text-align:center
+  }
+  
+  .logo {
+  display:block;
+  margin-left:auto;
+  margin-right:auto
+  }
+  
+  .logo::after {
+  content:"\a";
+  white-space:pre
+  }
+  
+  .logo_image {
+  margin-left:auto;
+  margin-right:auto;
+  padding-top:10px;
+  width:100%
+  }
+  
+  .menu li {
+  padding:0
+  }
+  
+  .menu li a {
+  color:var(--secondary-color);
+  font:bold 120% 'trebuchet ms',sans-serif;
+  height:30px;
+  padding:3px 9px;
+  text-decoration:none
+  }
+  
+  .menu2_block,.div3 {
+  text-align:match-parent
+  }
+  
+  .signin * {
+  display:inline
+  }
+  
+  h1 {
+  font-size:35px
+  }
   }

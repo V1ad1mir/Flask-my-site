@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<html id="my-theme">
 {% block head%}
+
 
 <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 <link id="stylesheet" rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
@@ -34,6 +36,7 @@
               </div>
         </span> 
         {% else %}
+        
         <span class="form">
             <form class = "signin" action="/sign" method="post">
                 <label for="fname">Email:</label>
@@ -51,8 +54,8 @@
 </div>
 <div class="menu1_block">
     <ul class="menu">
-        <li><a href="/map">My Voyajer Map</a></li>
-        <li><a href="/photos">My Voyajer Photos</a></li>
+        <li><a href="/map">Voyajer Map</a></li>
+        <li><a href="/photos">Voyajer Photos</a></li>
         <li><a href="/reviews">Voyajer Reviews</a></li> 
     </ul>
     
@@ -64,7 +67,17 @@
         {% include 'search_form.html' %}
     </span>
 </div>
+
 <div class="div3">
+    
+    {% for msg in get_flashed_messages() %}
+    <div class="error_message">
+    {{msg}}
+    </div>
+        
+    {% endfor %}
+
+
     <div class="content">
         {% block base %}
         {% endblock %}
@@ -74,3 +87,4 @@
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
     {% include  'bottom_block.html' %}
 {% endblock %}
+</html>

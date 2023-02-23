@@ -2,13 +2,16 @@
 {% block base %}
  <!-- include leaflet CSS and JS libraries -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+<style type="text/css">
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
 <h1>Map</h1>
-<div id="map">
-    {{ map|safe }}
+<div class="center">
+  <div id="map_block">
+      {{ map|safe }}
   </div>
+</div>
 
-  
   <div id="openModal" class="modal">
     <div class="modal-dialog">
       <div class="modal-content">

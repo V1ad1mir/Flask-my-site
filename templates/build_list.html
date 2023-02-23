@@ -3,8 +3,9 @@
 
 {% if session['email'] %}
 <div class="new_travel_div">
-  <button class="blue_btn" style="width:200px" onclick="toggleForm()">+ Create new travel</button>
-  <form id="travel-form" style="display: none;" method="POST" action="/add_trip">
+  <button class="blue_btn" style="width:200px" onclick="toggle()">+ Create new travel</button>
+  <div id="collapse" class="hide">
+  <form id="travel-form" method="POST" action="/add_trip">
     <table>
       <tr>
         <th>Country:</th>
@@ -29,6 +30,7 @@
     </table>
     <input class="blue_btn" type="submit" value="Add Trip">
   </form> 
+</div>
 </div>
 
 <div class="trips_table">

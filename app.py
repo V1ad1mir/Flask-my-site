@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import review
 import re
+from datetime import datetime, date
 
 app = Flask(__name__)
 
@@ -23,6 +24,12 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 # This is the folder where the uploaded photos will be saved
 app.config['UPLOAD_FOLDER'] = 'static/uploads' 
+
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
 
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
@@ -52,6 +59,7 @@ def reviews():
         author = session.get('name', 'Anonymous')
         if(len(country)>0):
             review.add_review(country, text, photo_filename, author)
+            flash('Successfully reviewed')
     # This function retrieves all the reviews from the database and sorts them based on the date they were created
     try:
         all_reviews = sorted(review.get_all_reviews(), key=lambda x: x['date'], reverse=True)
@@ -89,6 +97,8 @@ def check_user():
         session['email']=mail
         session['name']=result['username']
         session['ip_address'] = request.remote_addr
+    else:
+        flash('Invalid email or password')
     return redirect('/') 
 
 @app.route('/change_list', methods=['GET', 'POST'])    
@@ -157,39 +167,48 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    '''
-    go to the map page
-    '''
     if request.method == 'POST':
         form = request.form
         name = form['username']
         email = form['mail']
         password = form['password']
         c_password = form['confirm_password']
-        date_of_birth = request.form['date_of_birth']
+        date_of_birth_str = request.form['date_of_birth']
         country = request.form['country']
         avatar = None  # You can add code to handle file uploads and save the path to the file here
         errors = []
+        
+        # Validate date of birth
+        try:
+            date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+            if date_of_birth > date.today():
+                raise ValueError('Date of birth must be in the past')
+        except ValueError as e:
+            errors.append(str(e))
+            
+        # Validate country code
+        if len(country) != 2:
+            errors.append('Invalid country code. Use two-letter country code.')
+            
+        # Validate email address
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            errors.append("Invalid email address")
-        if(password!=c_password):
-            errors.append("Passwords not equals")
+            errors.append('Invalid email address')
+            
+        # Validate passwords match
+        if password != c_password:
+            errors.append('Passwords do not match')
+            
         if not errors:
-            #password = generate_password_hash(password)
-            try:
-                print(name, email, password,date_of_birth,country,avatar)
-                review.register_user(name, email, password,date_of_birth,country,avatar)
-                return redirect('/')
-            except:
-                ...
+            review.register_user(name, email, password, date_of_birth, country, avatar)
+            return redirect('/')
+        
+        flash(errors)
+        
     return render_template('register.html')
+
 
 @app.route('/map')
 def map_page():
-    '''
-    go to the map page
-    '''
-    # create the map
     try:
         map = review.create_map()
         return render_template('map.html', map=map._repr_html_())
@@ -199,9 +218,6 @@ def map_page():
 
 @app.route('/photos')
 def photos():
-    '''
-    go to photos page
-    '''
     return render_template('photos.html')
 
 

@@ -31,14 +31,30 @@ icon2.addEventListener('mousedown', function() {
   }
 });
 
-function toggleForm() {
-  var form = document.getElementById("travel-form");
-  if (form.style.display === "none") {
-    form.style.display = "table"; // Show the form as a table
+function toggle () {
+  document.getElementById("collapse").classList.toggle("show");
+}
+
+function toggleTheme() {
+  var root = document.documentElement;
+  var theme = localStorage.getItem('my-theme');
+
+  if (theme === 'dark') {
+      root.classList.remove('dark-theme');
+      localStorage.setItem('my-theme', 'light');
   } else {
-    form.style.display = "none"; // Hide the form
+      root.classList.add('dark-theme');
+      localStorage.setItem('my-theme', 'dark');
   }
 }
+
+// Check if a theme preference has already been set
+var theme = localStorage.getItem('my-theme');
+if (theme === 'dark') {
+  var root = document.documentElement;
+  root.classList.add('dark-theme');
+}
+
 
 function edit(d) {
   // Get the span elements

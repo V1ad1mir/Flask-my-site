@@ -22,7 +22,7 @@
       </div>
       <div class="form-group mr-2">
           <label for="country_filter" class="mr-2">Filter by country:</label>
-          <input type="text" name="country_filter" value="{{ request.args.get('country_filter') }}" class="form-control" placeholder="Enter country name">
+          <input type="text" name="country_filter"  value="{{ request.args.get('country_filter') }}" class="form-control" placeholder="Enter country name">
           <button class="blue_btn" type="submit" class="btn btn-primary">Filter</button>
       </div>
   </form>
@@ -39,10 +39,10 @@
             </header>
                 {% if review.photo != 'NULL' %}
                 <nav>
-                <img class="image" src="{{ url_for('static', filename='uploads/' + review.photo) }}" alt="{{ review.country }} photo">
+                <img class="image max_width" src="{{ url_for('static', filename='uploads/' + review.photo) }}" alt="{{ review.country }} photo">
                 </nav>  
                 {% else %}
-                <img class="image" src="{{ url_for('static', filename='img/CoMxJBKz_4x.jpg') }}" alt="{{ review.country }} photo">
+                <img class="image max_width" src="{{ url_for('static', filename='img/CoMxJBKz_4x.jpg') }}" alt="{{ review.country }} photo">
                 {% endif %}
                 <h2></h2>
                 <main>
