@@ -35,26 +35,88 @@ function toggle () {
   document.getElementById("collapse").classList.toggle("show");
 }
 
+
+// Function to toggle between light and dark themes
 function toggleTheme() {
   var root = document.documentElement;
-  var theme = localStorage.getItem('my-theme');
-
+  var theme = getCookie('theme');
   if (theme === 'dark') {
-      root.classList.remove('dark-theme');
-      localStorage.setItem('my-theme', 'light');
+    root.classList.remove('dark-theme');
+    setCookie('theme', 'light', 365);
+
+
   } else {
-      root.classList.add('dark-theme');
-      localStorage.setItem('my-theme', 'dark');
+    root.classList.add('dark-theme');
+    setCookie('theme', 'dark', 365);
   }
 }
 
 // Check if a theme preference has already been set
-var theme = localStorage.getItem('my-theme');
+var theme = getCookie('theme');
 if (theme === 'dark') {
   var root = document.documentElement;
   root.classList.add('dark-theme');
 }
 
+// Function to get a cookie by name
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+
+//for add or remove class 'bigger'
+function togglePhotoSize(photo) {
+  photo.classList.toggle('bigger');
+}
+
+function deletePhoto(photoName) {
+  if (confirm("Are you sure you want to delete this photo?")) {
+      fetch("/delete-photo", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+              photo_name: photoName
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              // Remove the card element that contains the deleted photo
+              const card = document.querySelector(`[src="/static/uploads/${photoName}"]`).parentNode;
+              card.parentNode.removeChild(card);
+          } else {
+              alert("Failed to delete photo.");
+          }
+      })
+      .catch(error => {
+          console.error(error);
+          alert("Failed to delete photo.");
+      });
+  }
+}
+
+//function for resize photo by clicking
+const photo = document.querySelector('img[src="/static/uploads/1489135991.svg"]');
+
+photo.addEventListener('click', () => {
+    photo.style.width = '300px'; // increase width
+    photo.style.height = '300px'; // increase height
+});
 
 function edit(d) {
   // Get the span elements

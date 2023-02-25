@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block base %}
 
-{% if session['email'] %}
+{% if session['name'] %}
 <div class="new_travel_div">
   <button class="blue_btn" style="width:200px" onclick="toggle()">+ Create new travel</button>
   <div id="collapse" class="hide">
@@ -32,7 +32,7 @@
   </form> 
 </div>
 </div>
-
+{% if data %}
 <div class="trips_table">
   <table>
     <tr>
@@ -46,6 +46,9 @@
       <th> </th>
       <th> </th>
     </tr>
+{% endif %}
+
+
   {% for row in data %}
     <tr>
       <td><input type="checkbox" name="select" value="{{row.d}}"></td>

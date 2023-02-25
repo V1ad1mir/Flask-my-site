@@ -28,8 +28,6 @@
   </form>
   <br>
   </div>
-
-
       <ul>
         {% for review in reviews %}
           <li class="review-list">
@@ -49,7 +47,7 @@
                       <p>{{ review.text }}</p>
                 </main>
                 <footer>
-                  <h3>Rating: {{ review.rating }}
+                  Rating: {{ review.rating }}
 
                   <form action="{{ url_for('rate_review', review_id=review.id) }}" method="POST">
                     <select name="rating">

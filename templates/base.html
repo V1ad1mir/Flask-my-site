@@ -6,17 +6,33 @@
 <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 <link id="stylesheet" rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
 <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/animation-plan.css') }}">
-<link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/edit_list.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+{% if request.cookies.get("theme")=='dark' %}
+<script>
+    document.documentElement.classList.add('dark-theme');
+</script>
+{% else %}
+<script>
+    document.documentElement.classList.remove('dark-theme');
+</script>
+
+{% endif %}
 
 
 {% endblock %}
 {% block content%}
 <div class="header_block">
-    <span class="logo">
-        <a href = "/"><img class ="logo_image"  src= "{{ url_for('static',filename='img/default-monochrome-black.svg') }}">    
+        <a href="/">
+           <span class="logo"> 
+            <svg  class="logo_image" id="my-svg-image" viewBox="10 22 79 44" xmlns="http://www.w3.org/2000/svg">
+                <path d="m81 44c-2-14-23-10-23-10l3-9-3 2-2 4-3 5-4 1c-3 2-2 4 1 3l4-1 3 2 3 3h4l-5-6c15-7 23 8 9 9-9 1-23-4-33-4-9 0-15 10-9 12 3 2 12 1 13 2l-2 8c3-1 2 0 3-2l2-4 2-4 4-1c3 0 3-2-1-2h-4a182 182 0 0 0 -8-5l-4-1 6 7c0 2-6 2-9 0-6-3 0-10 8-8 4 0 10 3 17 5 6 2 11 4 16 4 7 1 12-4 12-10"/>
+            </svg>
+            </span>
+            <span class="logo-text">
+            Voyajer Book    
+            </span>
         </a>
-        </span>
+        
         {% if session['name'] %}
         <span class="form">
             <h3>Welcome back</h3>
@@ -36,7 +52,6 @@
               </div>
         </span> 
         {% else %}
-        
         <span class="form">
             <form class = "signin" action="/sign" method="post">
                 <label for="fname">Email:</label>
@@ -47,10 +62,8 @@
             </form> 
             <a href="/register">Join Voyajer Book</a>
             <a href="#">Forget password?</a>
+        </span>    
         {% endif %}
-
-    
-    </span>
 </div>
 <div class="menu1_block">
     <ul class="menu">
@@ -62,7 +75,7 @@
 </div>
 <div class="menu2_block">
     <a href="/change_list"><button class="btn_build_map">Edit country list</button></a>
-    <a href="/question"><button class="ask_for_help">Community Question</button></a>
+    <a href="/question"><button class="btn_build_map">Community Question</button></a>
     <span class = "search_box">
         {% include 'search_form.html' %}
     </span>

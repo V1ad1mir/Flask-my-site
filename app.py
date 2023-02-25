@@ -7,6 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import review
 import re
 from datetime import datetime, date
+import os
+from flask import render_template
+from random import shuffle
+import hashlib
 
 app = Flask(__name__)
 
@@ -82,21 +86,25 @@ def signout():
     return redirect("/")
 
 
-@app.route('/sign', methods=['GET', 'POST'])
+
+@app.route('/sign', methods=['POST'])
 def check_user():
     form = request.form
     mail = form['email']
     password = form['pw']
-    cursor = mysql.connection.cursor()
-    result_value = cursor.execute("SELECT * FROM users WHERE email = %s AND password = %s", (mail,password) )
 
-    if(result_value==1):
-        cursor.execute("SELECT username FROM users WHERE email = %s", (mail,))
-        result = cursor.fetchone()
-   
-        session['email']=mail
-        session['name']=result['username']
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT id, email, password FROM users WHERE email = %s", (mail,))
+    user = cursor.fetchone()
+
+    if user and hashlib.sha256(password.encode('utf-8')).hexdigest() == user['password']:
+        session.clear()  # create a new session ID to prevent session fixation attacks
+        session['user_id'] = user['id']
+        session['name'] = user['email']
         session['ip_address'] = request.remote_addr
+        session.permanent = True  # Set the session to be permanent (i.e. saved in a cookie)
+
+        return redirect('/')
     else:
         flash('Invalid email or password')
     return redirect('/') 
@@ -165,6 +173,10 @@ def index():
         ...
     return render_template('index.html')
 
+def hash_password(password):
+    """Returns the SHA-256 hash of the given password string."""
+    return hashlib.sha256(password.encode()).hexdigest()
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -199,12 +211,26 @@ def register():
             errors.append('Passwords do not match')
             
         if not errors:
-            review.register_user(name, email, password, date_of_birth, country, avatar)
+            # Hash the user's password
+            hashed_password = hash_password(password)
+            review.register_user(name, email, hashed_password, date_of_birth, country, avatar)
             return redirect('/')
         
         flash(errors)
+        return redirect('/register')
         
     return render_template('register.html')
+
+
+@app.route('/delete-photo/<filename>', methods=['POST'])
+def delete_photo(filename):
+    # code to delete photo from storage
+    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        flash('Photo deleted successfully!', 'success')
+    else:
+        flash('Failed to delete photo.', 'error')
+    return redirect(url_for('photos'))
 
 
 @app.route('/map')
@@ -218,7 +244,10 @@ def map_page():
 
 @app.route('/photos')
 def photos():
-    return render_template('photos.html')
+    photo_folder = 'static/uploads' # Set the path to your photo folder here
+    photos = os.listdir(photo_folder)
+    shuffle(photos) # Randomly sort the list of photos
+    return render_template('photos.html', photos=photos)
 
 
 if __name__ == '__main__':
