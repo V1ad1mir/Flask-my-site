@@ -31,9 +31,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html')
+
 
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
@@ -98,12 +96,10 @@ def check_user():
     user = cursor.fetchone()
 
     if user and hashlib.sha256(password.encode('utf-8')).hexdigest() == user['password']:
-        session.clear()  # create a new session ID to prevent session fixation attacks
         session['user_id'] = user['id']
         session['name'] = user['email']
         session['ip_address'] = request.remote_addr
         session.permanent = True  # Set the session to be permanent (i.e. saved in a cookie)
-
         return redirect('/')
     else:
         flash('Invalid email or password')
@@ -221,7 +217,6 @@ def register():
         
     return render_template('register.html')
 
-
 @app.route('/delete-photo/<filename>', methods=['POST'])
 def delete_photo(filename):
     # code to delete photo from storage
@@ -232,7 +227,6 @@ def delete_photo(filename):
         flash('Failed to delete photo.', 'error')
     return redirect(url_for('photos'))
 
-
 @app.route('/map')
 def map_page():
     try:
@@ -241,7 +235,6 @@ def map_page():
     except:
         return render_template('map.html')
     
-
 @app.route('/photos')
 def photos():
     photo_folder = 'static/uploads' # Set the path to your photo folder here
@@ -249,6 +242,9 @@ def photos():
     shuffle(photos) # Randomly sort the list of photos
     return render_template('photos.html', photos=photos)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

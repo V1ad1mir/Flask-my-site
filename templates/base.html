@@ -2,8 +2,6 @@
 <html id="my-theme">
 {% block head%}
 
-
-<script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 <link id="stylesheet" rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
 <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/animation-plan.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
@@ -36,7 +34,7 @@
         {% if session['name'] %}
         <span class="form">
             <h3>Welcome back</h3>
-            <h2>{{session['name']}}</h2>
+            <h3>{{session['name']}}</h3>
             <h3>ip:{{session['ip_address']}}</h3>
             <div class="dropdown">
                 <button class="dropbtn">

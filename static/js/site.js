@@ -1,35 +1,39 @@
-const icon = document.getElementById('toggle1');
-let password = document.getElementById('password1');
+/**
+* This function toggles the visibility of two password input fields when a user clicks on corresponding icons.
+* It first selects the icons and password fields using their IDs and adds event listeners to them.
+* When a user clicks on the icon, the function checks if the corresponding password field is currently hidden (type="password").
+* If it is hidden, it changes the type to "text" to reveal the password and updates the icon to show a crossed-out eye.
+* If it is already visible (type="text"), it changes the type back to "password" to hide the password and updates the icon to show a normal eye.
+**/
 
-/* Event fired when <i> is clicked */
-icon.addEventListener('click', function() {
-  if(password.type === "password") {
-    password.type = "text";
+function togglePasswordVisibility(icon, passwordField) {
+  if(passwordField.type === "password") {
+    passwordField.type = "text";
     icon.classList.add("fa-eye-slash");
     icon.classList.remove("fa-eye");
   }
   else {
-    password.type = "password";
+    passwordField.type = "password";
     icon.classList.add("fa-eye");
     icon.classList.remove("fa-eye-slash");
   }
+}
+
+const icon1 = document.getElementById('toggle1');
+const password1 = document.getElementById('password2');
+icon1.addEventListener('mousedown', function() {
+  togglePasswordVisibility(icon1, password1);
 });
 
 const icon2 = document.getElementById('toggle2');
-let password2 = document.getElementById('password2');
-
+const password2 = document.getElementById('password1');
 icon2.addEventListener('mousedown', function() {
-  if(password2.type === "password") {
-    password2.type = "text";
-    icon2.classList.add("fa-eye-slash");
-    icon2.classList.remove("fa-eye");
-  }
-  else {
-    password2.type = "password";
-    icon2.classList.add("fa-eye");
-    icon2.classList.remove("fa-eye-slash");
-  }
+  togglePasswordVisibility(icon2, password2);
 });
+
+/**
+ * Toggles the 'show' class on the element with id 'collapse'.
+ */
 
 function toggle () {
   document.getElementById("collapse").classList.toggle("show");
@@ -37,14 +41,13 @@ function toggle () {
 
 
 // Function to toggle between light and dark themes
+
 function toggleTheme() {
   var root = document.documentElement;
   var theme = getCookie('theme');
   if (theme === 'dark') {
     root.classList.remove('dark-theme');
     setCookie('theme', 'light', 365);
-
-
   } else {
     root.classList.add('dark-theme');
     setCookie('theme', 'dark', 365);
@@ -76,64 +79,26 @@ function setCookie(name, value, days) {
   document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-
-//for add or remove class 'bigger'
+/**
+ * Toggles the size of a given photo by adding or removing the 'bigger' class.
+ * @param {HTMLElement} photo - The photo element to toggle the size of.
+ */
 function togglePhotoSize(photo) {
   photo.classList.toggle('bigger');
 }
 
-function deletePhoto(photoName) {
-  if (confirm("Are you sure you want to delete this photo?")) {
-      fetch("/delete-photo", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-              photo_name: photoName
-          })
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.success) {
-              // Remove the card element that contains the deleted photo
-              const card = document.querySelector(`[src="/static/uploads/${photoName}"]`).parentNode;
-              card.parentNode.removeChild(card);
-          } else {
-              alert("Failed to delete photo.");
-          }
-      })
-      .catch(error => {
-          console.error(error);
-          alert("Failed to delete photo.");
-      });
-  }
-}
 
-//function for resize photo by clicking
-const photo = document.querySelector('img[src="/static/uploads/1489135991.svg"]');
-
-photo.addEventListener('click', () => {
-    photo.style.width = '300px'; // increase width
-    photo.style.height = '300px'; // increase height
-});
+/**
+ * Replaces the span elements containing travel data with input elements for editing
+ * @param {number} d - The ID of the travel data row to be edited
+ */
 
 function edit(d) {
-  // Get the span elements
-  var country_span = document.getElementById('country_' + d);
-  var monthyear_span = document.getElementById('monthyear_' + d);
-  var cities_span = document.getElementById('cities_' + d);
-  var duration_span = document.getElementById('duration_' + d);
-  var budget_span = document.getElementById('budget_' + d);
-  var rating_span = document.getElementById('rating_' + d);
-
-  // Replace the span elements with input elements
-  country_span.innerHTML = '<input type="text" name="country" value="' + country_span.innerHTML + '">';
-  monthyear_span.innerHTML = '<input type="text" name="monthyear" value="' + monthyear_span.innerHTML + '">';
-  cities_span.innerHTML = '<input type="text" name="cities" value="' + cities_span.innerHTML + '">';
-  duration_span.innerHTML = '<input type="number" min="1" name="duration" value="' + duration_span.innerHTML + '">';
-  budget_span.innerHTML = '<input type="number" step="100" min="100" name="budget" value="' + budget_span.innerHTML + '">';
-  rating_span.innerHTML = '<input type="number" name="rating" min="1" max="5" value="' + rating_span.innerHTML + '">';
+  // Get the span elements and replace them with input elements
+  ['country', 'monthyear', 'cities', 'duration', 'budget', 'rating'].forEach(function(property) {
+    var span = document.getElementById(property + '_' + d);
+    span.innerHTML = '<input type="' + (property === 'duration' ? 'number" min="1"' : 'text') + ' name="' + property + '" value="' + span.innerHTML + '">';
+  });
 
   // Change the button text to "Save" and attach the save function
   var edit_button = document.getElementById('edit_button_' + d);
@@ -142,7 +107,6 @@ function edit(d) {
     save(d);
   };
 }
-
 
 function showInput(event) {
   event.preventDefault();
@@ -153,19 +117,3 @@ function showInput(event) {
   }
 }
 
-
-
-// Add click event listener to choropleth layer
-choroplethLayer.on('click', function(e) {
-  var country = e.target.feature.properties.name;
-  
-  // Send AJAX request to Flask route to get travel details for country
-  $.ajax({
-    url: '/get_travel_details',
-    data: {country: country},
-    success: function(response) {
-      // Display travel details in modal or popup
-      // The response will be a JSON object with the travel details
-    }
-  });
-});

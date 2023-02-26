@@ -120,7 +120,6 @@
   margin:4px;
   padding:3px 18px;
   text-align:center;
-  
   }
   
   .ask_for_help:hover,.btn_build_map:hover  {
@@ -336,6 +335,8 @@
   padding: 0.05vmax 0.5vmax;
   margin: 0 1.1vmax;
   }
+
+
   .menu li a {
   color:var(--secondary-color);
   display:block;
@@ -351,11 +352,16 @@
   
   .menu1_block,.bottom_block {
   background-color:var(--primary-color);
-  text-align:center
+  margin: 0;
   }
   
   .menu2_block {
   padding:6px
+  }
+
+  ul.menu{
+    margin-top: 1px;
+    margin-bottom: 1px;
   }
   
   .menu2_block,.div3,.trips_table {
@@ -550,8 +556,16 @@
   
   .form {
   float:left;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  
+  }
+
+  span.form *{
+    display: inline;
+    background-color:red;
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
   }
   
   .header_block {
