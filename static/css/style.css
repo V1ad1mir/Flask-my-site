@@ -14,12 +14,16 @@
   --tertiary-color:#cb0554;
   }
 
-  .my-svg-image path{
-    fill: var(--primary-color);
-  }
-
   .card-img-top {
     transition: all 1s ease-in-out;
+  }
+
+  .filter-plane{
+    filter: invert(89%) sepia(6%) saturate(4308%) hue-rotate(308deg) brightness(134%) contrast(97%);
+  }
+
+  .dark-theme .filter-plane{
+    filter: invert(81%) sepia(11%) saturate(0%) hue-rotate(148deg) brightness(101%) contrast(89%);
   }
   
   .card-img-top.bigger {
@@ -37,21 +41,17 @@
 
   #gallery {
     line-height:0;
-    -webkit-column-count:5; /* split it into 5 columns */
-    -webkit-column-gap:5px; /* give it a 5px gap between columns */
-    -moz-column-count:5;
-    -moz-column-gap:5px;
     column-count:5;
     column-gap:5px;
  }
 
  @media (max-width: 800px) {
   #gallery {
-   -moz-column-count:    2;
-   -webkit-column-count: 2;
+
    column-count:         2;
   }
 }
+
 
  #gallery img {
   transition: filter 2s;
@@ -72,16 +72,12 @@
   }
   
   #collapse {
-  display:flex;
-  display:none;
-  height:0;
-  justify-content:center;
   margin-left:auto;
   margin-right:auto;
   opacity:0;
   text-align:center;
   transition:all .5s;
-  width:100%
+  width:100%;
   }
   
   #collapse.show {
@@ -249,11 +245,15 @@
   margin-top:10px;
   padding:0 5px
   }
+
+  .header_block .form{
+    float:right;
+    margin-right: 20px;
+    line-height: 4px;
+  }
   
   .form {
-  float:right;
   font-family:'Trebuchet MS','Lucida Sans Unicode','Lucida Grande','Lucida Sans',Arial,sans-serif;
-  text-align:center
   }
   
   .form a {
@@ -378,7 +378,11 @@
   .new_travel_div * {
   font-size:17px;
   padding:3px;
-  width:120px
+  width: 200px;;
+  }
+
+table{
+    margin-left: -100%;
   }
   
   .new_travel_div tr {
@@ -451,8 +455,7 @@
   border:2px solid var(--primary-color);
   border-radius:8px;
   list-style:none;
-  margin:25px 0;
-  padding:10px
+  margin:5px 0;
   }
   
   .review-list #rev {
@@ -462,14 +465,22 @@
   
   .review-list footer {
   grid-area:foot;
-  margin-left:15px
+  font-size: smaller;
+  margin-top: 20px;
+  display:inline-flex;
+  
+  }
+
+  .review-list footer *{
+    margin: 0 15px;
   }
   
   .review-list header {
   font:bold 120% 'trebuchet ms',sans-serif;
   grid-area:head;
-  margin:5px 0;
-  padding:2px 0
+  margin:0 5px;
+  padding:0;
+  height: 2em;
   }
   
   .review-list main {
@@ -551,7 +562,11 @@
   }
   
   div.center {
-  margin:auto
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:10px;
+    width:100%;
   }
 
   .logo svg:hover{
@@ -591,14 +606,12 @@
   margin-right:30px
   }
   
-  .form {
+.header_block .form{
   float:left;
   margin-top: 0;
   margin-bottom: 0;
-  
-  }
+}
 
- 
 
   span.form *{
     display: inline;
@@ -667,24 +680,28 @@
     animation-iteration-count: infinite;
   }
 
+  
+
+
+
   @keyframes move-right {
     0% {
       left: 0;
       opacity: 1;
     }
     40% {
-      left: 50%;
-      opacity: 0.2;
+      left: 45%;
+      opacity: 0.1;
     }
 
-    40% {
+    50% {
       left: 50%;
       opacity: 0;
     }
 
     60% {
-      left: 50%;
-      opacity: 0.2;
+      left: 60%;
+      opacity: 0.1;
     }
     100% {
       left: 95%;
