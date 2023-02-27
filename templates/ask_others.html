@@ -1,23 +1,57 @@
 {% extends 'base.html' %}
 {% block base %}
-{% if all_questions %}
-      <ul>
-        {% for q in all_questions %}
-          
-          <h2>{{ q.question }}</h2>
-          <h3>{{ q.author_que }}</h3>
-            <p>{{ q.date }}</p>
-            {% if q.answer==None %}
-                This question is not has a answer.
-            {% else %}
-                {{q.answer }}
-            {% endif %}
-        {% endfor %}
-        </ul>
-{% else %}
-        <p>No questions yet.</p>
-{% endif %}
 
+<form method="get">
+            <div class="filter2">
+                <input class="form-check-input" type="checkbox" name="answered" id="answered" 
+                {% if show_answered_questions %}
+                    checked
+                {% endif %}>
+                <label class="form-check-label" for="answered">
+                    Show questions with answers only
+                </label>
+                <button type="submit" class="blue_btn">Apply</button>
+            </div>
+        </form>
+{% if all_questions %}
+    <ul>
+        {% for q in all_questions %}
+        <div class="question-block">
+            <div class="little">
+                <span>Author: {{ q.author_que }}</span>
+                <span>Date: {{ q.date }}</span>    
+            </div>
+            
+            <div>
+                <h3>{{ q.question }}</h3>
+            </div>
+        
+            
+            {% if q.answer==None %}
+                <p>This question has not been answered yet.</p>
+                <button class="blue_btn" onclick="toggle()">Reply</button>
+                <div id="collapse" class="hide">
+                    <form id="travel-form" method="POST" action="/add_answer">
+                        <input type="hidden" name="question_id" value="{{ q.id }}">
+                        <label for="answer">Answer:</label>
+                        <textarea name="answer"></textarea>
+                        <input class="blue_btn" type="submit" value="Submit">
+                    </form>    
+                </div>
+            {% else %}
+                <h4>Answer: "{{ q.answer }}" by {{ q.author_ans }} </h4>
+                
+            {% endif %}
+
+            
+            
+        </div>    
+        {% endfor %}
+        
+    </ul>
+{% else %}
+    <p>No questions yet.</p>
+{% endif %}
 
 
 

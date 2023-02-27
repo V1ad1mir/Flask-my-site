@@ -5,7 +5,6 @@ import datetime
 import folium
 import pandas as pd
 
-
 #DB configuration
 db = yaml.safe_load(open('db.yaml'))
 
@@ -20,21 +19,12 @@ def connect():
     except Error as e:
         print(f"The error '{e}' occurred")
     
+def set_answer_for_question(question_id, answer, author_ans):
+    with connect() as conn:
+        c = conn.cursor()
+        c.execute('UPDATE community_questions SET answer = %s, author_ans = %s WHERE id = %s', (answer, author_ans, question_id))
+        conn.commit()
     
-def create_connection(host_name = db['mysql_host'],user_name =  db['mysql_user'], db_password = db['mysql_password']):
-    connection = None
-    try:
-        connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=db_password,
-        )
-        print("Connection to MySQL DB successful")
-    except Error as e:
-        print(f"The error '{e}' occurred")
-    return connection
-    
-
 def register_user(name,mail, password, date_of_birth,  country, avatar):
     with connect() as conn:
         c = conn.cursor()
@@ -55,8 +45,6 @@ def register_user(name,mail, password, date_of_birth,  country, avatar):
         conn.commit()
     
 
-
-        
 def add_community_question(question,author_que):
     with connect() as conn:
         c = conn.cursor()
@@ -79,14 +67,24 @@ def add_community_question(question,author_que):
 
 def get_all_questions():
     with connect() as conn:
-            c = conn.cursor()
-            query = "SELECT * FROM community_questions;"
-            c.execute(query)
-            keys = [column[0] for column in c.description]
-            values = [value for row in c.fetchall() for value in row]
-            # convert the zip object into a list of dictionaries
-            result = [{key: value} for (key, value) in zip(keys, values)]
-            return result
+        c = conn.cursor()
+        query = "SELECT * FROM community_questions;"
+        c.execute(query)
+        data = c.fetchall()
+        # Convert the data to a list of dictionaries
+        community_questions = []
+        for row in data:
+            travel = {}
+            travel['id'] = row[0]
+            travel['question'] = row[1]
+            travel['answer'] = row[2]
+            travel['author_que'] = row[3]
+            travel['author_ans'] = row[4]
+            travel['date'] = row[5]
+            community_questions.append(travel)
+        return community_questions
+            
+            
 
 # define the function to create the map
 def create_map():
@@ -225,3 +223,8 @@ def get_rating(review_id):
         c.execute('SELECT rating FROM reviews WHERE id = %s', (review_id,))
         rating = c.fetchone()
     return rating[0] if rating else None
+
+import re
+
+def correct_mail_address(email):
+    return re.match(r'[^@]+@[^@]+\.[^@]+', email)

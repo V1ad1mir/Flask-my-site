@@ -97,10 +97,13 @@
   box-shadow:0 0 5px #ccc;
   display:table-footer-group
   }
+
+  .list-group{
+    display: block;
+  }
   
   .add_review {
-  margin-bottom:70px;
-  margin-top:30px
+  margin-bottom: 5em;
   }
   
   .add_review span {
@@ -138,10 +141,10 @@
   box-shadow:rgba(0,0,0,0.15) 0 2px 8px
   }
   
-  .author_text {
+  /* .author_text {
   float:right;
   margin-right:15px
-  }
+  } */
   
   .big_text {
   color:var(--primary-color);
@@ -235,6 +238,10 @@
   .filter {
   display:flex
   }
+
+  .filter2{
+    margin: 1em 0;
+  }
   
   .filter * {
   margin-left:auto;
@@ -312,7 +319,7 @@
   }
 
   .logo-text{
-    font-size: 6vw;
+    font-size: 6em;
   }
 
 
@@ -381,9 +388,39 @@
   .q_form * {
   display:block;
   margin-left:auto;
-  margin-right:auto
+  margin-right:auto;
+  margin-bottom: 50px;
   }
-  
+
+  .question-block{
+    border:2px solid var(--primary-color);
+    border-radius:12px;
+    padding: 5px;
+    background-color: var(--secondary-color);
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .question-block div{
+    margin: 0 auto;
+  }
+
+  .question-block span{
+    margin: 0 15%;
+    font: 87% 'trebuchet ms',sans-serif;
+  }
+
+  .question-block p{
+    color: var(--tertiary-color);
+  }
+
+.little{
+  display: inline;
+  text-align: center;
+}
+
+
+
   .register_form {
   display:inline-block;
   margin-left:auto;
@@ -560,6 +597,8 @@
   margin-bottom: 0;
   
   }
+
+ 
 
   span.form *{
     display: inline;

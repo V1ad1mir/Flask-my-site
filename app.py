@@ -5,7 +5,7 @@ import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import review
-import re
+
 from datetime import datetime, date
 import os
 from flask import render_template
@@ -31,43 +31,86 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 
 
-
-
-
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
 def delete_review(review_id):
     review.delete_review(review_id)
     return redirect(url_for('reviews'))
 
 
+def is_valid_image(photo)->bool:
+    """
+    Checks whether a file is a valid image file.
+
+    Parameters:
+        photo (werkzeug.datastructures.FileStorage): The file to check.
+
+    Returns:
+        bool: True if the file is a valid image file, False otherwise.
+    """
+    if not photo:
+        return False  # no file was provided
+    
+    # check if the file has an allowed image extension
+    allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
+    if not '.' in photo.filename or photo.filename.split('.')[-1].lower() not in allowed_extensions:
+        return False  # invalid extension
+    
+    # check if the file size is not larger than 2MB
+    max_size_bytes = 2 * 1024 * 1024  # 2MB
+    if photo.content_length > max_size_bytes:
+        return False  # file too large
+    
+    return True  # the file is valid
+
+
 @app.route('/reviews', methods=['GET', 'POST'])
 def reviews():
+    """
+    View function for the /reviews route.
+
+    If a POST request is received, retrieves the country name, review text, and photo
+    from the submitted form, saves the photo to the UPLOAD_FOLDER, and adds a new
+    review to the database.
+
+    Retrieves all the reviews from the database and sorts them based on the date they
+    were created. Renders the 'reviews.html' template and passes the reviews data to it.
+
+    Returns:
+        A Flask response object containing the rendered template or an error message.
+    """
     if request.method == 'POST':
         # Get the data from the form
         country = request.form.get('country', '') 
         text = request.form.get('review', '') 
         photo = request.files.get('photo', None)
-        photo_filename = 'NULL'
+        
+        # Validate the input
+        if not country:
+            flash('Please enter a country name')
+            return redirect(request.url)
+        if not text:
+            flash('Please enter a review')
+            return redirect(request.url)
+        if photo and not is_valid_image(photo):
+            flash('Invalid image file')
+            return redirect(request.url)
         
         # Save the photo to the upload folder
-        try:
-            if photo:
-                photo_filename = secure_filename(photo.filename)
-                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
-        except:
-            pass
-            
-        # Save the country name, review text, and photo filename to the database
+        photo_filename = None
+        if photo:
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+        
+        # Save the review to the database
         author = session.get('name', 'Anonymous')
-        if(len(country)>0):
-            review.add_review(country, text, photo_filename, author)
-            flash('Successfully reviewed')
-    # This function retrieves all the reviews from the database and sorts them based on the date they were created
-    try:
-        all_reviews = sorted(review.get_all_reviews(), key=lambda x: x['date'], reverse=True)
-        return render_template('reviews.html', reviews=all_reviews)
-    except:
-        return render_template('reviews.html')
+        review.add_review(country, text, photo_filename, author)
+        flash('Successfully reviewed')
+        return redirect(request.url)
+
+    # Retrieve reviews from the database
+    all_reviews = review.get_all_reviews()
+    all_reviews.sort(key=lambda x: x['date'], reverse=True)
+    return render_template('reviews.html', reviews=all_reviews)
     
 
 @app.route('/review/<int:review_id>/rate', methods=['POST'])
@@ -120,9 +163,33 @@ def change_list():
 def question():
     try:
         all_questions = review.get_all_questions()
-        return render_template('ask_others.html',all_questions=all_questions )    
+        
+        # Check if the "Show questions with answers only" checkbox is checked
+        show_answered_questions = request.args.get('answered', False, type=bool)
+        print(all_questions)
+        
+        # Filter the questions based on the checkbox value
+        if show_answered_questions:
+            questions = [q for q in all_questions if q['answer'] != None]
+        else:
+            questions = all_questions
+        
+        return render_template('ask_others.html',all_questions=questions, show_answered_questions=show_answered_questions)    
     except:
         return render_template('ask_others.html') 
+    
+@app.route('/add_answer', methods=['POST'])
+def add_answer():
+    # Get the question ID from the form
+    author_of_answer = session.get('name', 'Anonymous')
+    question_id = request.form.get('question_id')
+    answer = request.form.get('answer')
+
+    # Retrieve the question from the database
+    review.set_answer_for_question(question_id, author_of_answer, answer)
+    
+    # Redirect the user back to the list of questions
+    return redirect(url_for('question'))
     
 @app.route('/add_trip', methods=['POST'])
 def add_trip():
@@ -199,7 +266,7 @@ def register():
             errors.append('Invalid country code. Use two-letter country code.')
             
         # Validate email address
-        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        if not review.correct_mail_address(email):
             errors.append('Invalid email address')
             
         # Validate passwords match
@@ -245,6 +312,7 @@ def photos():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
