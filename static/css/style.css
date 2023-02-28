@@ -248,11 +248,12 @@
   }
 
   .header_block .form{
+    font-size: smaller;
     float:right;
     margin-right: 20px;
-    line-height: 4px;
+    line-height: 15px;
   }
-  
+
   .form {
   font-family:'Trebuchet MS','Lucida Sans Unicode','Lucida Grande','Lucida Sans',Arial,sans-serif;
   }
@@ -260,7 +261,9 @@
   .form a {
   color:var(--tertiary-color);
   font:87% 'trebuchet ms',sans-serif;
+  font-weight: bold;
   margin:4px 2px;
+  word-spacing: normal;
   
   }
 
