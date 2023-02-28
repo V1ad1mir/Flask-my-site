@@ -85,12 +85,6 @@ def reviews():
         photo = request.files.get('photo', None)
         
         # Validate the input
-        if not country:
-            flash('Please enter a country name')
-            return redirect(request.url)
-        if not text:
-            flash('Please enter a review')
-            return redirect(request.url)
         if photo and not is_valid_image(photo):
             flash('Invalid image file')
             return redirect(request.url)
