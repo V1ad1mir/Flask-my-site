@@ -68,7 +68,8 @@
   
   @font-face {
   font-family:"Custom Font";
-  src:url(/static/fonts/hussarbdsuprcon.otf)
+  src:url(/static/fonts/hussarbdsuprcon.otf);
+  
   }
   
   #collapse {
