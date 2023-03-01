@@ -5,19 +5,16 @@ import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import review
-
 from datetime import datetime, date
-import os
-from flask import render_template
 from random import shuffle
 import hashlib
-
 import pymysql
 
 app = Flask(__name__)
 
 #DB configuration
-db = yaml.safe_load(open('db.yaml'))
+with open('db.yaml') as f:
+    db = yaml.safe_load(f)
 
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
@@ -158,33 +155,36 @@ def change_list():
 @app.route('/question', methods=['GET', 'POST'])    
 def question():
     try:
-        all_questions = review.get_all_questions()
+        all_questions_list = review.get_all_questions()
         
         # Check if the "Show questions with answers only" checkbox is checked
-        show_answered_questions = request.args.get('answered', False, type=bool)
-        print(all_questions)
+        checkbox_answers = request.args.get('answered', False, type=bool)
         
         # Filter the questions based on the checkbox value
-        if show_answered_questions:
-            questions = [q for q in all_questions if q['answer'] != None]
-        else:
-            questions = all_questions
+        filtered_questions_list = all_questions_list if not checkbox_answers else [q for q in all_questions_list if q['answer'] is not None]
         
-        return render_template('ask_others.html',all_questions=questions, show_answered_questions=show_answered_questions)    
-    except:
-        return render_template('ask_others.html') 
+        return render_template('ask_others.html', all_questions=filtered_questions_list, show_answered_questions=checkbox_answers)    
+    except Exception as e:
+        flash('An error occurred: {}'.format(str(e)), 'error')
+        return render_template('ask_others.html')
     
 @app.route('/add_answer', methods=['POST'])
 def add_answer():
-    # Get the question ID from the form
+    """
+    Adds an answer to a question and redirects to the question page.
+
+    The answer is obtained from the 'answer' field in the POST request.
+    The author of the answer is obtained from the session.
+    The ID of the question is obtained from the 'question_id' field in the POST request.
+    The answer is saved using the 'set_answer_for_question' function from the 'review' module.
+
+    Returns:
+        A redirect to the 'question' function.
+    """
     author_of_answer = session.get('name', 'Anonymous')
     question_id = request.form.get('question_id')
     answer = request.form.get('answer')
-
-    # Retrieve the question from the database
     review.set_answer_for_question(question_id, author_of_answer, answer)
-    
-    # Redirect the user back to the list of questions
     return redirect(url_for('question'))
     
 @app.route('/add_trip', methods=['POST'])

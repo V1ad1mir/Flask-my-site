@@ -3,8 +3,8 @@
 
 {% if session['name'] %}
 <div class="new_travel_div">
-  <button class="blue_btn" style="width:200px" onclick="toggle()">+ Create new travel</button>
-  <div id="collapse" class="hide">
+  <button class="blue_btn" style="width:200px" onclick="toggle(0)">+ Create new travel</button>
+  <div id="collapse0" class="hide">
   <form id="travel-form" method="POST" action="/add_trip">
     <table>
       <tr>

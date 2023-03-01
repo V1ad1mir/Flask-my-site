@@ -21,27 +21,31 @@ function togglePasswordVisibility(icon, passwordField) {
 
 const icon1 = document.getElementById('toggle1');
 const password1 = document.getElementById('password2');
-icon1.addEventListener('mousedown', function() {
-  togglePasswordVisibility(icon1, password1);
-});
+
+if (icon1) {
+  icon1.addEventListener('mousedown', function() {
+    togglePasswordVisibility(icon1, password1);
+  });
+}
 
 const icon2 = document.getElementById('toggle2');
 const password2 = document.getElementById('password1');
-icon2.addEventListener('mousedown', function() {
+if(icon2) {
+ icon2.addEventListener('mousedown', function() {
   togglePasswordVisibility(icon2, password2);
-});
+}); 
+}
 
 /**
  * Toggles the 'show' class on the element with id 'collapse'.
  */
 
-function toggle () {
-  document.getElementById("collapse").classList.toggle("show");
+function toggle (id) {
+  document.getElementById("collapse"+id).classList.toggle("show");
 }
 
 
 // Function to toggle between light and dark themes
-
 function toggleTheme() {
   var root = document.documentElement;
   var theme = getCookie('theme');

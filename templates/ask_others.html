@@ -29,9 +29,9 @@
             
             {% if q.answer==None %}
                 <p>This question has not been answered yet.</p>
-                <button class="blue_btn" onclick="toggle()">Reply</button>
-                <div id="collapse" class="hide">
-                    <form id="travel-form" method="POST" action="/add_answer">
+                <button class="blue_btn" onclick="toggle({{ q.id }})">Reply</button>
+                <div id="collapse{{ q.id }}" class="hide">
+                    <form method="POST" action="/add_answer">
                         <input type="hidden" name="question_id" value="{{ q.id }}">
                         <label for="answer">Answer:</label>
                         <textarea name="answer"></textarea>
