@@ -104,7 +104,7 @@ function edit(d) {
   var edit_button = document.getElementById('edit_button_' + d);
   edit_button.innerHTML = 'Save';
   edit_button.onclick = function() {
-    save(d);
+    // save(d);
   };
 }
 

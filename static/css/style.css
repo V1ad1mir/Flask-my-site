@@ -1,5 +1,4 @@
- 
-  :root {
+ :root {
   --primary-color:#659DBD;
   --secondary-color:#FBEEC1;
   --tertiary-color:#BC986A;
@@ -387,7 +386,7 @@
   .new_travel_div * {
   font-size:17px;
   padding:3px;
-  width: 200px;;
+  width: 200px;
   }
 
 table{

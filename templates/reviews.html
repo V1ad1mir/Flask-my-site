@@ -7,7 +7,7 @@
     <div class="filter"
 
     <form method="GET" action="{{ url_for('reviews') }}" class="form-inline">
-      <div class="form-group mr-2>
+      <div class="form-group mr-2">
           <label for="sort_by" class="mr-2">Sort by:</label>
           <select name="sort_by" class="form-control" onchange="this.form.submit()">
               <option value="">Select sort option</option>
@@ -56,12 +56,7 @@
                     </select>
                     <input class="blue_btn" type="submit" value="Rate">
                   </form>
-                  </h3>
                   
-
-
-
-
 
                   <p class = "author_text">Author: {{ review.author }}, Date: {{ review.date.strftime('%Y-%m-%d') }}</p>
 
