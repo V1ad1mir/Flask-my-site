@@ -1,7 +1,4 @@
-* {
-  
-  }
-  
+ 
   :root {
   --primary-color:#659DBD;
   --secondary-color:#FBEEC1;
@@ -177,12 +174,20 @@
   }
   
   .content {
-  margin:0 15%
+  margin:0 15%;
+  }
+
+  .shadow{
+    box-shadow: 0 0 5px var(--primary-color);
   }
   
   .div3,.terms,.dropdown:hover .dropdown-content,.review-list footer span {
   display:block
   }
+
+
+
+
   
   .dropdown {
   color:var(--primary-color);
@@ -607,7 +612,8 @@ table{
   
   .content {
   margin-left:30px;
-  margin-right:30px
+  margin-right:30px;
+  
   }
   
 .header_block .form{

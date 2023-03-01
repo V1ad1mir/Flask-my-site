@@ -12,6 +12,8 @@ from flask import render_template
 from random import shuffle
 import hashlib
 
+import pymysql
+
 app = Flask(__name__)
 
 #DB configuration
@@ -214,21 +216,32 @@ def add_community_question():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     '''
-    go to the main page
+    Go to the main page.
+
+    If the request method is POST and the user is authenticated, render the index page.
+    If the request method is GET, retrieve a list of users from the database and render the index page with the list of users.
     '''
     if request.method == 'POST':
         if check_user():
             return render_template('index.html')
-    #----test only----
+
+    # Retrieve a list of users from the database
     try:
         cursor = mysql.connection.cursor()
-        result_value = cursor.execute("SELECT * FROM users;")
-        if(result_value>0):
-            users = cursor.fetchall()
-            return render_template('index.html',users=users)
-    except:
-        ...
-    return render_template('index.html')
+        cursor.execute("SELECT * FROM users;")
+        users = cursor.fetchall()
+    except (pymysql.err.OperationalError, pymysql.err.ProgrammingError) as e:
+        # Log the error and return a generic error message to the user
+        app.logger.error(f"An error occurred while retrieving users from the database: {e}")
+        flash('Sorry, something went wrong. Please try again later.', 'error')
+        return render_template('index.html')
+
+    finally:
+        # Close the database connection
+        cursor.close()
+
+    return render_template('index.html', users=users)
+
 
 def hash_password(password):
     """Returns the SHA-256 hash of the given password string."""
@@ -306,6 +319,10 @@ def photos():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
+
+import requests
+
+
 
 
 if __name__ == '__main__':
