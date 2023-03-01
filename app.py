@@ -249,6 +249,18 @@ def hash_password(password):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    Register a new user based on submitted form data.
+
+    Validates form inputs for user registration, including name, email,
+    password, date of birth, country code, and password confirmation. If all
+    inputs are valid, the user's password is hashed and saved to the database,
+    and the user is redirected to the home page. Otherwise, the form is
+    redisplayed with error messages.
+
+    Returns:
+        Rendered HTML template for user registration.
+    """
     if request.method == 'POST':
         form = request.form
         name = form['username']
@@ -293,7 +305,16 @@ def register():
 
 @app.route('/delete-photo/<filename>', methods=['POST'])
 def delete_photo(filename):
-    # code to delete photo from storage
+    """
+    This function deletes a photo with a given filename from the application's storage. 
+    It first checks if the file exists in the upload folder, and if it does, it removes it from the folder. 
+    It then displays a success or error message using Flask's flash() function and redirects the user to the photos page.
+
+    Args:
+        filename: str - the name of the file to be deleted
+    Returns:
+        redirect to the photos page
+    """
     if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         flash('Photo deleted successfully!', 'success')
@@ -319,10 +340,6 @@ def photos():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
-
-import requests
-
-
 
 
 if __name__ == '__main__':
