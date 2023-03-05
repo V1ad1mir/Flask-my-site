@@ -8,7 +8,8 @@ import review
 from datetime import datetime, date
 from random import shuffle
 import hashlib
-import pymysql
+
+from mysql.connector import Error
 
 app = Flask(__name__)
 
@@ -61,6 +62,31 @@ def is_valid_image(photo)->bool:
     
     return True  # the file is valid
 
+def generate_sorting_dropdown(selected_sort_option=None):
+    options = [
+        ('', 'Select sort option'),
+        ('date_asc', 'Date (oldest first)'),
+        ('date_desc', 'Date (newest first)'),
+        ('name_asc', 'Name (A-Z)'),
+        ('name_desc', 'Name (Z-A)'),
+    ]
+    html = '<label for="sort_by">Sort by:</label>'
+    html += '<select name="sort_by" onchange="this.form.submit()">'
+    for value, label in options:
+        selected = 'selected' if value == selected_sort_option else ''
+        html += f'<option value="{value}" {selected}>{label}</option>'
+    html += '</select>'
+    return html
+
+
+def generate_filtering_input(country_filter=None):
+    html = '<label for="country_filter">Filter by country:</label>'
+    html += f'<input type="text" name="country_filter" value="{country_filter}" placeholder="Enter country name">'
+    html += '<button type="submit">Filter</button>'
+    return html
+
+
+
 
 @app.route('/reviews', methods=['GET', 'POST'])
 def reviews():
@@ -71,45 +97,66 @@ def reviews():
     from the submitted form, saves the photo to the UPLOAD_FOLDER, and adds a new
     review to the database.
 
-    Retrieves all the reviews from the database and sorts them based on the date they
-    were created. Renders the 'reviews.html' template and passes the reviews data to it.
+    Retrieves all the reviews from the database and sorts them based on the sort option
+    specified in the request args. If a country filter is also specified, filters the
+    reviews by the country. Renders the 'reviews.html' template and passes the reviews
+    data to it.
 
     Returns:
         A Flask response object containing the rendered template or an error message.
     """
+
+    # Handle form submission for adding a new review
     if request.method == 'POST':
         # Get the data from the form
-        country = request.form.get('country', '') 
-        text = request.form.get('review', '') 
+        country = request.form.get('country', '')
+        text = request.form.get('review', '')
         photo = request.files.get('photo', None)
-        
+
         # Validate the input
         if photo and not is_valid_image(photo):
             flash('Invalid image file')
             return redirect(request.url)
-        
+
         # Save the photo to the upload folder
         photo_filename = None
         if photo:
             photo_filename = secure_filename(photo.filename)
             photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
-        
+
         # Save the review to the database
         author = session.get('name', 'Anonymous')
         review.add_review(country, text, photo_filename, author)
         flash('Successfully reviewed')
         return redirect(request.url)
 
-    # Retrieve reviews from the database
+    # Retrieve reviews from the database and sort/filter them
+    sort_option = request.args.get('sort_by', '')
+    country_filter = request.args.get('country_filter', '')
+
     all_reviews = review.get_all_reviews()
-    all_reviews.sort(key=lambda x: x['date'], reverse=True)
+    
+    if sort_option == 'date_asc':
+        all_reviews.sort(key=lambda x: x['date'])
+    elif sort_option == 'date_desc':
+        all_reviews.sort(key=lambda x: x['date'], reverse=True)
+    elif sort_option == 'name_asc':
+        all_reviews.sort(key=lambda x: x['country'])
+    elif sort_option == 'name_desc':
+        all_reviews.sort(key=lambda x: x['country'], reverse=True)
+        
+
+    if country_filter != 'None':
+        all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
+        
     return render_template('reviews.html', reviews=all_reviews)
+
     
 
 @app.route('/review/<int:review_id>/rate', methods=['POST'])
 def rate_review(review_id):
     rating = int(request.form['rating'])
-    review.add_rating(review_id, rating)
+    review.update_rating(review_id, rating)
     flash('Rating added successfully!')
     return redirect(url_for('reviews'))
 
@@ -217,30 +264,8 @@ def add_community_question():
 def index():
     '''
     Go to the main page.
-
-    If the request method is POST and the user is authenticated, render the index page.
-    If the request method is GET, retrieve a list of users from the database and render the index page with the list of users.
     '''
-    if request.method == 'POST':
-        if check_user():
-            return render_template('index.html')
-
-    # Retrieve a list of users from the database
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM users;")
-        users = cursor.fetchall()
-    except (pymysql.err.OperationalError, pymysql.err.ProgrammingError) as e:
-        # Log the error and return a generic error message to the user
-        app.logger.error(f"An error occurred while retrieving users from the database: {e}")
-        flash('Sorry, something went wrong. Please try again later.', 'error')
-        return render_template('index.html')
-
-    finally:
-        # Close the database connection
-        cursor.close()
-
-    return render_template('index.html', users=users)
+    return render_template('index.html')
 
 
 def hash_password(password):

@@ -177,7 +177,8 @@ def add_review(country, text, photo_filename, author):
         country VARCHAR(255) NOT NULL,
         text TEXT NOT NULL,
         photo VARCHAR(255),
-        rating INT DEFAULT 0,
+        rating_total INT DEFAULT 0,
+        rating_count INT DEFAULT 0,
         author VARCHAR(255) NOT NULL,
         date DATE NOT NULL
         );
@@ -214,8 +215,26 @@ def get_all_reviews():
     try:
         with connect() as conn:
             c = conn.cursor()
-            c.execute('SELECT country, text, photo, author, date ,id, rating FROM reviews')
-            reviews = [{'country': row[0], 'text': row[1], 'photo': row[2], 'author': row[3], 'date': row[4] , 'id': row[5], 'rating': row[6] } for row in c.fetchall()]
+            c.execute('SELECT * FROM reviews')
+            rows = c.fetchall()
+            reviews = []
+            for row in rows:
+                review = {
+                    'id': row[0],
+                    'country': row[1],
+                    'text': row[2],
+                    'photo': row[3],
+                    'rating': row[4],
+                    'author': row[6],
+                    'date': row[7],
+                }
+                # Calculate the average rating for the review
+                if row[5] > 0:
+                    average_rating = row[4] / row[5]
+                    review['average_rating'] = '{:.2f}'.format(average_rating)
+                else:
+                    review['average_rating'] = 0
+                reviews.append(review)
     except:
         reviews=[]
     return reviews
@@ -227,10 +246,28 @@ def delete_review(review_id):
         conn.commit()
         
 
-def add_rating(review_id, rating):
+def update_rating(review_id, rating):
+    """
+    Update the rating for the review with the given ID.
+
+    Args:
+        review_id: The ID of the review to update.
+        rating: The new rating to assign to the review.
+
+    Returns:
+        None
+    """
     with connect() as conn:
         c = conn.cursor()
-        c.execute('UPDATE reviews SET rating = %s WHERE id = %s', (rating, review_id))
+        # Calculate the total rating and rating count for the review
+        c.execute('SELECT rating_total, rating_count FROM reviews WHERE id = %s', (review_id,))
+        result = c.fetchone()
+        if result is not None:
+            rating_total = result[0] + rating
+            rating_count = result[1] + 1
+            # Update the rating and rating count
+            c.execute('UPDATE reviews SET rating_total = %s, rating_count = %s WHERE id = %s',
+                           (rating_total, rating_count, review_id))
         conn.commit()
 
 def get_rating(review_id):

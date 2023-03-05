@@ -121,5 +121,9 @@ function showInput(event) {
   }
 }
 
+document.querySelector('[name="country_filter"]').addEventListener("input", function() {
+  this.form.submit();
+});
+
 
 

@@ -270,11 +270,36 @@
   padding:0 5px
   }
 
-  .header_block .form{
+  header .form{
+    padding: 0.2rem;
     font-size: smaller;
     float:right;
     margin-right: 20px;
     line-height: 15px;
+  }
+
+   .form input[type=text], .form input[type=password] {
+  padding: 3px;
+  box-sizing: border-box;
+  border: 3px solid var(--primary-color);
+  border-radius: 10px;
+  transition: 0.5s;
+  outline: none;
+  }
+
+  .form input[type=text]:hover,.form input[type=password]:hover {
+    border: 3px solid var(--tertiary-color);
+  }
+
+  .form input[type=submit]{
+    margin-bottom: 0.5rem;
+  }
+
+
+
+  header{
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
   }
 
   .form {
@@ -327,11 +352,6 @@
   display:block;
   font-size:120%;
   margin:10px 20px
-  }
-  
-  .header_block {
-  flex-shrink:0;
-  display:table;
   }
   
   .logo,.form {
@@ -483,11 +503,13 @@ table{
   border-radius:8px;
   list-style:none;
   margin:5px 0;
+  padding: 0 10px;
+  width: 100%;
   }
   
-  .review-list #rev {
+  .review-list section{
   display:grid;
-  grid-template:[header-left] "head head" [header-right] [main-left] "nav main" [main-right] [footer-left] "nav foot" [footer-right] / 250px 1fr
+  grid-template:[header-left] "head head" [header-right] [main-left] "nav main" [main-right] [footer-left] "nav foot" [footer-right] 
   }
   
   .review-list footer {
@@ -502,22 +524,27 @@ table{
     margin: 0 15px;
   }
   
-  .review-list header {
+  section header {
   font:bold 120% 'trebuchet ms',sans-serif;
   grid-area:head;
-  margin:0 5px;
   padding:0;
   height: 2em;
   }
-  
-  .review-list main {
-  grid-area:main;
-  padding:20px;
-  text-align:justify
+
+  .reviews_filter *{
+    margin: 8px 0;
   }
   
-  .review-list nav {
-  grid-area:nav
+  section main {
+  grid-area:main;
+  margin-left: 5px;
+  padding:5px;
+  width: fit-content;
+  text-align:justify;
+  }
+  
+  section nav {
+  grid-area:nav;
   }
   
   .search_box {
@@ -607,7 +634,7 @@ table{
   width:auto
   }
   
-  img.max_width {
+  .max_width {
   max-height:250px;
   max-width:250px
   }
@@ -623,38 +650,38 @@ table{
   display:inline-block
   }
   
-  @media (max-width: 770px) {
-  .big_text {
-  width:85%
+  @media (max-width: 1050px) {
+  .logo{
+    float: none;
+    width: 20%;
+    margin: -5px;
+    padding: -5px;
   }
-  
+
+  .logo-text{
+    margin-top:-5px;
+  }
+
   .content {
-  margin-left:30px;
-  margin-right:30px;
-  
-  }
-  
-.header_block .form{
-  float:left;
-  margin-top: 0;
-  margin-bottom: 0;
-}
+    margin:0 5%;
+    }
 
 
-  span.form *{
-    display: inline;
-    background-color:red;
-    margin-block-start: 0 !important;
-    margin-block-end: 0 !important;
+  header span.form form{
+    display: inline block;
+    margin: 0.5em;
+  }
+
+  header .form{
+    float: none;
   }
   
-  .header_block {
-  font:110% 'trebuchet ms',sans-serif;
-  justify-content:center;
-  text-align:center;
-  display: table-cell;
-  vertical-align: middle;
+  header{
+    display: inline-block;
+    padding-bottom: 20px;
   }
+
+
   
   .logo {
   display:block;
