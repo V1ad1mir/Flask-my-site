@@ -167,7 +167,6 @@ def signout():
     return redirect("/")
 
 
-
 @app.route('/sign', methods=['POST'])
 def check_user():
     form = request.form
@@ -350,10 +349,12 @@ def delete_photo(filename):
 @app.route('/map')
 def map_page():
     try:
-        map = review.create_map()
-        return render_template('map.html', map=map._repr_html_())
-    except:
-        return render_template('map.html')
+        map_html = review.create_map()._repr_html_()
+    except Exception as e:
+        # Handle exceptions more gracefully
+        map_html = None
+        app.logger.error(f"Error creating map: {e}")
+    return render_template('map.html', map=map_html)
     
 @app.route('/photos')
 def photos():
