@@ -6,7 +6,8 @@ import folium
 import pandas as pd
 
 #DB configuration
-db = yaml.safe_load(open('db.yaml'))
+with open('db.yaml') as f:
+    db = yaml.safe_load(f)
 
 def connect():
     try:
