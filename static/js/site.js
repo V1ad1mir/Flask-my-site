@@ -120,9 +120,12 @@ function showInput(event) {
   }
 }
 
-document.querySelector('[name="country_filter"]').addEventListener("input", function() {
-  this.form.submit();
-});
+const countryFilter = document.querySelector('[name="country_filter"]');
+if (countryFilter) {
+  countryFilter.addEventListener("input", function() {
+    this.form.submit();
+  });
+}
 
 
 

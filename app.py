@@ -4,11 +4,13 @@ import yaml
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-import review
-import server_operations
 from datetime import datetime, date
 from random import shuffle
 import hashlib
+
+#add other python files
+import review
+import server_operations
 
 from mysql.connector import Error
 
@@ -105,7 +107,7 @@ def query_results():
         server_operations.make_query(query)
     except:
         print('error')
-    return render_template('admin.html',)
+    return redirect('/admin')
 
 
 
