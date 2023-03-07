@@ -388,13 +388,25 @@ def map_page():
     
 @app.route('/photos')
 def photos():
-    photo_folder = 'static/uploads' # Set the path to your photo folder here
-    photos = os.listdir(photo_folder)
-    shuffle(photos) # Randomly sort the list of photos
-    return render_template('photos.html', photos=photos)
+    """
+    Renders a page displaying all the photos in the 'static/uploads' folder, randomly sorted.
+    """
+    photo_folder = 'static/uploads'
+    photo_files = os.listdir(photo_folder)
+    shuffle(photo_files)
+    return render_template('photos.html', photos=photo_files)
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """
+    Renders a custom 404 error page.
+
+    Args:
+        error (Any): The error that occurred.
+
+    Returns:
+        str: The rendered HTML of the 404 error page.
+    """
     return render_template('404.html')
 
 
