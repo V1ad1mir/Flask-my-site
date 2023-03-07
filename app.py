@@ -36,6 +36,15 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
 def delete_review(review_id):
+    """
+    Delete a review with the given review_id.
+
+    Args:
+        review_id (int): The ID of the review to be deleted.
+
+    Returns:
+        A redirect to the reviews page.
+    """
     review.delete_review(review_id)
     return redirect(url_for('reviews'))
 
@@ -66,6 +75,9 @@ def is_valid_image(photo)->bool:
     return True  # the file is valid
 
 def generate_sorting_dropdown(selected_sort_option=None):
+    """
+    This module contains functions for generating HTML code to display and interact with reviews data.
+    """
     options = [
         ('', 'Select sort option'),
         ('date_asc', 'Date (oldest first)'),
@@ -89,7 +101,6 @@ def generate_filtering_input(country_filter=None):
     return html
 
 
-
 @app.route('/admin')
 def admin_page():
     #reviews, , trips, users = review.get_all_data()
@@ -108,8 +119,6 @@ def query_results():
     except:
         print('error')
     return redirect('/admin')
-
-
 
 @app.route('/reviews', methods=['GET', 'POST'])
 def reviews():
@@ -156,7 +165,6 @@ def reviews():
     # Retrieve reviews from the database and sort/filter them
     sort_option = request.args.get('sort_by', '')
     country_filter = request.args.get('country_filter', '')
-
     all_reviews = server_operations.get_all_reviews()
     
     if request.method == 'GET':
@@ -175,7 +183,6 @@ def reviews():
     return render_template('reviews.html', reviews=all_reviews)
 
     
-
 @app.route('/review/<int:review_id>/rate', methods=['POST'])
 def rate_review(review_id):
     rating = int(request.form['rating'])

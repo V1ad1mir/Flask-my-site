@@ -104,8 +104,7 @@ function makeEditable(row) {
     const value = cell.innerText;
     cell.innerHTML = `<input type="text" value="${value}">`;
   }
-  var edit_button = document.getElementById('edit_button_' + d);
-  edit_button.innerHTML = 'Save';
+  
   edit_button.onclick = function() {
     // save(d);
   };
