@@ -5,6 +5,7 @@ import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import review
+import server_operations
 from datetime import datetime, date
 from random import shuffle
 import hashlib
@@ -87,6 +88,26 @@ def generate_filtering_input(country_filter=None):
 
 
 
+@app.route('/admin')
+def admin_page():
+    #reviews, , trips, users = review.get_all_data()
+    users = server_operations.get_all_users()
+    community_questions = server_operations.get_all_community_questions()
+    reviews = server_operations.get_all_reviews()
+    travels = server_operations.get_my_travels('admin')
+    return render_template('admin.html',users=users,questions=community_questions,posts=reviews,travels=travels)
+    
+
+@app.route('/query', methods=['POST'])
+def query_results():
+    query = request.form['query']
+    try:
+        server_operations.make_query(query)
+    except:
+        print('error')
+    return render_template('admin.html',)
+
+
 
 @app.route('/reviews', methods=['GET', 'POST'])
 def reviews():
@@ -134,21 +155,21 @@ def reviews():
     sort_option = request.args.get('sort_by', '')
     country_filter = request.args.get('country_filter', '')
 
-    all_reviews = review.get_all_reviews()
+    all_reviews = server_operations.get_all_reviews()
     
-    if sort_option == 'date_asc':
-        all_reviews.sort(key=lambda x: x['date'])
-    elif sort_option == 'date_desc':
-        all_reviews.sort(key=lambda x: x['date'], reverse=True)
-    elif sort_option == 'name_asc':
-        all_reviews.sort(key=lambda x: x['country'])
-    elif sort_option == 'name_desc':
-        all_reviews.sort(key=lambda x: x['country'], reverse=True)
-        
+    if request.method == 'GET':
+        if sort_option == 'date_asc':
+            all_reviews.sort(key=lambda x: x['date'])
+        elif sort_option == 'date_desc':
+            all_reviews.sort(key=lambda x: x['date'], reverse=True)
+        elif sort_option == 'name_asc':
+            all_reviews.sort(key=lambda x: x['country'])
+        elif sort_option == 'name_desc':
+            all_reviews.sort(key=lambda x: x['country'], reverse=True)
 
-    if country_filter != 'None':
-        all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
-        
+        if country_filter != 'None':
+            all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
+            
     return render_template('reviews.html', reviews=all_reviews)
 
     
@@ -191,7 +212,7 @@ def check_user():
 def change_list():
     if 'name' in session:
         try:
-            list_of_travels = review.get_my_travels(session['name'])
+            list_of_travels = server_operations.get_my_travels(session['name'])
             print(list_of_travels)
             return render_template('build_list.html',data=list_of_travels)
         except: ...
@@ -201,7 +222,7 @@ def change_list():
 @app.route('/question', methods=['GET', 'POST'])    
 def question():
     try:
-        all_questions_list = review.get_all_questions()
+        all_questions_list = server_operations.get_all_community_questions()
         
         # Check if the "Show questions with answers only" checkbox is checked
         checkbox_answers = request.args.get('answered', False, type=bool)

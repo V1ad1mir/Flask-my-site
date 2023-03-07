@@ -92,19 +92,18 @@ function togglePhotoSize(photo) {
 }
 
 
-/**
- * Replaces the span elements containing travel data with input elements for editing
- * @param {number} d - The ID of the travel data row to be edited
- */
 
-function edit(d) {
-  // Get the span elements and replace them with input elements
-  ['country', 'monthyear', 'cities', 'duration', 'budget', 'rating'].forEach(function(property) {
-    var span = document.getElementById(property + '_' + d);
-    span.innerHTML = '<input type="' + (property === 'duration' ? 'number" min="1"' : 'text') + ' name="' + property + '" value="' + span.innerHTML + '">';
-  });
-
-  // Change the button text to "Save" and attach the save function
+function makeEditable(row) {
+  const cells = row.cells;
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i];
+    // Skip cells that contain <a> elements
+    if (cell.querySelector('a') || cell.querySelector('button') || cell.querySelector('input[type="checkbox"]') ){
+      continue;
+    }
+    const value = cell.innerText;
+    cell.innerHTML = `<input type="text" value="${value}">`;
+  }
   var edit_button = document.getElementById('edit_button_' + d);
   edit_button.innerHTML = 'Save';
   edit_button.onclick = function() {

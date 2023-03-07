@@ -79,7 +79,7 @@
       <td><span id="budget_{{row.d}}">{{row.budget}}</span></td>
       <td><span id="rating_{{row.d}}">{{row.rating}}</span></td>
 
-      <td><button id="edit_button_{{row.d}}" class="blue_btn" onclick="edit({{row.d}})">Edit</button></td>
+      <td><button id="edit_button_{{row.d}}" class="blue_btn" onclick="makeEditable(this.parentElement.parentElement)">Edit</button></td>
       <td><button class="blue_btn" onclick="del({{row.d}})">Delete</button></td>
     </tr>
   {% endfor %}

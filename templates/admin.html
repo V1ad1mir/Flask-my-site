@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Page</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>User Management</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Date of Birth</th>
+          <th>Country</th>
+          <th>Avatar</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.date_of_birth }}</td>
+          <td>{{ user.country }}</td>
+          <td>{{ user.avatar }}</td>
+          <td>
+            <a href="#" onclick="makeEditable(this.parentElement.parentElement)">Edit</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Community Questions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Question</th>
+          <th>Answer</th>
+          <th>Question Author</th>
+          <th>Answer Author</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for question in questions %}
+        <tr>
+          <td>{{ question['id'] }}</td>
+          <td>{{ question['question'] }}</td>
+          <td>{{ question['answer'] or '' }}</td>
+          <td>{{ question['author_que'] }}</td>
+          <td>{{ question['author_ans'] or '' }}</td>
+          <td>{{ question['date'].strftime('%Y-%m-%d') }}</td>
+          <td>
+            <a href="#" onclick="makeEditable(this.parentElement.parentElement)">Edit</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Reviews List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Country</th>
+          <th>Text</th>
+          <th>Photo</th>
+          <th>Rating</th>
+          <th>Author</th>
+          <th>Date</th>
+          <th>Average Rating</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+        <tr>
+          <td>{{ post.id }}</td>
+          <td>{{ post.country }}</td>
+          <td>{{ post.text }}</td>
+          <td>
+            <img
+              src="{{ post.photo }}"
+              alt="Post photo"
+              height="100"
+              width="100"
+            />
+          </td>
+          <td>{{ post.rating }}</td>
+          <td>{{ post.author }}</td>
+          <td>{{ post.date }}</td>
+          <td>{{ post.average_rating }}</td>
+          <td>
+            <a href="#" onclick="makeEditable(this.parentElement.parentElement)">Edit</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>My Travels</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Month</th>
+          <th>Year</th>
+          <th>Cities</th>
+          <th>Duration</th>
+          <th>Budget</th>
+          <th>Rating</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for travel in travels %}
+        <tr>
+          <td>{{ travel['id'] }}</td>
+          <td>{{ travel['user_name'] }}</td>
+          <td>{{ travel['country'] }}</td>
+          <td>{{ travel['month'] }}</td>
+          <td>{{ travel['year'] }}</td>
+          <td>{{ travel['cities'] }}</td>
+          <td>{{ travel['duration'] }}</td>
+          <td>{{ travel['budget'] }}</td>
+          <td>{{ travel['rating'] }}</td>
+          <td>
+            <a href="#" onclick="makeEditable(this.parentElement.parentElement)">Edit</a>
+            <a href="#">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+    <h1>MySQL Query Form</h1>
+    <form method="POST" action="/query">
+      <label for="query">Enter your query:</label><br>
+      <textarea id="query" name="query" rows="10" cols="50"></textarea><br>
+      <input type="submit" value="Submit">
+    </form>
+
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+  </body>
+</html>
