@@ -111,7 +111,6 @@ def get_all_users():
             users.append(user)
         return users
     
-
 def make_query(query):
     with connect() as conn:
         c = conn.cursor()
