@@ -33,6 +33,12 @@ app.config['SECRET_KEY'] = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = 'static/uploads' 
 
 
+@app.route('/delete', methods=['POST'])
+def delete_user():
+    username = request.form['username']
+    server_operations.delete_user(username)
+    redirect('/')
+
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
 def delete_review(review_id):

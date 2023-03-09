@@ -45,7 +45,10 @@
           <td>{{ user.avatar }}</td>
           <td>
             <a href="#" onclick="makeEditable(this.parentElement.parentElement)">Edit</a>
-            <a href="#">Delete</a>
+            <form action="{{ url_for('delete_user') }}" method="post">
+              <input type="hidden" name="username" value="{{ user.username }}">
+              <button type="submit">Delete</button>
+            </form>
           </td>
         </tr>
         {% endfor %}

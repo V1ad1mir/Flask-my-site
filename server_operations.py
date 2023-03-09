@@ -1,22 +1,7 @@
-import mysql.connector
-from mysql.connector import Error
-import yaml
+import connect as c
 
 def connect():
-    # Load DB configuration from file
-    with open('db.yaml') as f:
-        db = yaml.safe_load(f)
-    # Connect to database
-    try:
-        connection = mysql.connector.connect(
-            host=db['mysql_host'],
-            user=db['mysql_user'],
-            password=db['mysql_password'],
-            database=db['mysql_db']
-        )
-        return connection
-    except Error as e:
-        raise Exception(f"Could not connect to database. Error: {e}")
+    return c.connect()
 
 def get_all_community_questions():
     with connect() as conn:
@@ -111,6 +96,12 @@ def get_all_users():
             users.append(user)
         return users
     
+def delete_user(username):
+    with connect() as conn:
+        c = conn.cursor()
+        c.execute("DELETE FROM users WHERE username = %s", (username,))
+        conn.commit()
+
 def make_query(query):
     with connect() as conn:
         c = conn.cursor()

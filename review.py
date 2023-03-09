@@ -1,24 +1,12 @@
-import mysql.connector
-from mysql.connector import Error
-import yaml
 import datetime
 import folium
 import pandas as pd
 import re
+#import file with connection properties
+import connect as c
 
 def connect():
-    #DB configuration
-    with open('db.yaml') as f:
-        db = yaml.safe_load(f)
-    try:
-        return mysql.connector.connect(
-            host = db['mysql_host'],
-            user = db['mysql_user'],
-            password = db['mysql_password'],
-            database = db['mysql_db']
-        )
-    except Error as e:
-        print(f"The error '{e}' occurred")
+    return c.connect()
     
 def set_answer_for_question(question_id, answer, author_ans):
     with connect() as conn:
@@ -32,7 +20,7 @@ def register_user(name,mail, password, date_of_birth,  country, avatar):
         c.execute('''CREATE TABLE IF NOT EXISTS users
                 (
                 id INT NOT NULL AUTO_INCREMENT,
-                username VARCHAR(50) NOT NULL,
+                username VARCHAR(50) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 date_of_birth DATE,
