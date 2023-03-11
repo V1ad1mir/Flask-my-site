@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import yaml
 
+
 def connect():
     # Load DB configuration from file
     with open('db.yaml') as f:
