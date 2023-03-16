@@ -1,17 +1,21 @@
-from flask import Flask,render_template,request,session,redirect,flash, url_for
-from flask_mysqldb import MySQL
 import os
-from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 from random import shuffle
 import hashlib
 
-#add other python files
-import review
-import server_operations
+import requests
+from bs4 import BeautifulSoup
+
+from flask import Flask, render_template, request, session, redirect, flash, url_for
+from flask_mysqldb import MySQL
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from mysql.connector import Error
+
+# add other python files
+import review
+import server_operations
 
 app = Flask(__name__)
 app.config.from_object('config.Config') #from config.py
@@ -72,9 +76,7 @@ def scrape_all_urls():
     return page_contents
 
 
-from bs4 import BeautifulSoup
 
-import requests
 
 def scrape_url_title(url):
     response = requests.get(url)
