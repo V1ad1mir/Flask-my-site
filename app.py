@@ -161,15 +161,6 @@ def reviews():
     """
     View function for the /reviews route.
 
-    If a POST request is received, retrieves the country name, review text, and photo
-    from the submitted form, saves the photo to the UPLOAD_FOLDER, and adds a new
-    review to the database.
-
-    Retrieves all the reviews from the database and sorts them based on the sort option
-    specified in the request args. If a country filter is also specified, filters the
-    reviews by the country. Renders the 'reviews.html' template and passes the reviews
-    data to it.
-
     Returns:
         A Flask response object containing the rendered template or an error message.
     """
@@ -179,7 +170,7 @@ def reviews():
         # Get the data from the form
         country = request.form.get('country', '')
         text = request.form.get('review', '')
-        photo = request.files.get('photo', None)
+        photo = request.files.get('photo')
 
         # Validate the input
         if photo and not is_valid_image(photo):
@@ -187,10 +178,8 @@ def reviews():
             return redirect(request.url)
 
         # Save the photo to the upload folder
-        photo_filename = None
-        if photo:
-            photo_filename = secure_filename(photo.filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+        photo_filename = secure_filename(photo.filename) if photo else None
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename)) if photo else None
 
         # Save the review to the database
         author = session.get('name', 'Anonymous')
@@ -203,20 +192,22 @@ def reviews():
     country_filter = request.args.get('country_filter', '')
     all_reviews = server_operations.get_all_reviews()
     
-    if request.method == 'GET':
-        if sort_option == 'date_asc':
-            all_reviews.sort(key=lambda x: x['date'])
-        elif sort_option == 'date_desc':
-            all_reviews.sort(key=lambda x: x['date'], reverse=True)
-        elif sort_option == 'name_asc':
-            all_reviews.sort(key=lambda x: x['country'])
-        elif sort_option == 'name_desc':
-            all_reviews.sort(key=lambda x: x['country'], reverse=True)
+    # Sort the reviews
+    sort_keys = {
+        'date_asc': 'date',
+        'date_desc': 'date',
+        'name_asc': 'country',
+        'name_desc': 'country'
+    }
+    if sort_option in sort_keys:
+        all_reviews.sort(key=lambda x: x[sort_keys[sort_option]], reverse=sort_option.endswith('_desc'))
 
-        if country_filter != 'None':
-            all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
-            
+    # Filter the reviews
+    if country_filter and country_filter != 'None':
+        all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
+
     return render_template('reviews.html', reviews=all_reviews)
+
 
     
 @app.route('/review/<int:review_id>/rate', methods=['POST'])
