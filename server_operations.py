@@ -46,7 +46,8 @@ def get_all_reviews():
                 else:
                     review['average_rating'] = 0
                 reviews.append(review)
-    except:
+    except Exception as e:
+        print(str(e))
         reviews=[]
     return reviews
 
