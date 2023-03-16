@@ -138,12 +138,11 @@ def generate_filtering_input(country_filter=None):
 
 @app.route('/admin')
 def admin_page():
-    #reviews, , trips, users = review.get_all_data()
     users = server_operations.get_all_users()
     community_questions = server_operations.get_all_community_questions()
-    reviews = server_operations.get_all_reviews()
+    posts= server_operations.get_all_reviews()
     travels = server_operations.get_my_travels('admin')
-    return render_template('admin.html',users=users,questions=community_questions,posts=reviews,travels=travels)
+    return render_template('admin.html',users=users,questions=community_questions,posts=posts,travels=travels)
     
 
 @app.route('/query', methods=['POST'])
