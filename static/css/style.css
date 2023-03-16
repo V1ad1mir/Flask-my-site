@@ -25,8 +25,8 @@
   .card-img-top.bigger {
     position: relative;
     z-index: 1;
-    transform: scale(1.2);
-    border: var(--primary-color);
+    transform: scale(1.5);
+    border:2px solid var(--primary-color);
     border-radius: 5px;
   }
 
@@ -52,8 +52,8 @@
  #gallery img {
   transition: filter 2s;
   filter: grayscale(100%);
-  width: 100% !important;
-  height: auto !important;
+  width: 100% ;
+  height: auto ;
   margin-bottom:5px; /* to match column gap */
 }
 

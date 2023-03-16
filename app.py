@@ -1,6 +1,5 @@
 from flask import Flask,render_template,request,session,redirect,flash, url_for
 from flask_mysqldb import MySQL
-import yaml
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -15,30 +14,8 @@ import server_operations
 from mysql.connector import Error
 
 app = Flask(__name__)
-
-#DB configuration
-with open('db.yaml') as f:
-    db = yaml.safe_load(f)
-
-app.config['MYSQL_HOST'] = db['mysql_host']
-app.config['MYSQL_USER'] = db['mysql_user']
-app.config['MYSQL_PASSWORD'] = db['mysql_password']
-app.config['MYSQL_DB'] = db['mysql_db']
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config.from_object('config.Config') #from config.py
 mysql = MySQL(app)
-
-app.config['SECRET_KEY'] = os.urandom(24)
-
-# This is the folder where the uploaded photos will be saved
-app.config['UPLOAD_FOLDER'] = 'static/uploads' 
-
-
-@app.route('/delete', methods=['POST'])
-def delete_user():
-    username = request.form['username']
-    server_operations.delete_user(username)
-    redirect('/')
-
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
 def delete_review(review_id):
@@ -54,6 +31,56 @@ def delete_review(review_id):
     review.delete_review(review_id)
     return redirect(url_for('reviews'))
 
+
+@app.route('/search')
+def search():
+    # Get the search query from the URL parameters
+    search_query = request.args.get('q')
+
+    # If the search query is empty, redirect to the homepage
+    if not search_query:
+        return redirect(url_for('index'))
+
+    # Perform the search using the search_query
+    # and return the results as a list or dictionary
+    results = perform_search(search_query)
+
+    # Render the search results template with the search query and results
+    return render_template('search_results.html', search_query=search_query, results=results)
+
+def perform_search(search_query):
+    # Scrape the URLs and titles of all the pages
+    pages = scrape_all_urls()
+    results = [scrape_url_title(url) for url in pages]
+
+    # Filter the results based on the search query
+    if search_query:
+        results = [result for result in results if search_query.lower() in result[1].lower()]
+
+    return results
+
+def scrape_all_urls():
+    base_url = 'http://127.0.0.1:5000'
+    urls = ['/reviews', '/question', '/photos', '/map']
+    page_contents = {}
+    for url in urls:
+        full_url = base_url + url
+        response = requests.get(full_url)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        title = soup.title.string.strip()
+        page_contents[full_url] = title
+    return page_contents
+
+
+from bs4 import BeautifulSoup
+
+import requests
+
+def scrape_url_title(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    title = soup.title.string.strip()
+    return url, title
 
 def is_valid_image(photo)->bool:
     """
@@ -268,6 +295,7 @@ def add_answer():
     answer = request.form.get('answer')
     review.set_answer_for_question(question_id, author_of_answer, answer)
     return redirect(url_for('question'))
+ 
     
 @app.route('/add_trip', methods=['POST'])
 def add_trip():
@@ -282,7 +310,6 @@ def add_trip():
     year, month = month_year.split('-')
     review.add_trip(user_name, country, month, year, cities, duration, budget, rating)
     return redirect('/change_list') 
-
 
 
 
@@ -406,12 +433,6 @@ def photos():
 def page_not_found(error):
     """
     Renders a custom 404 error page.
-
-    Args:
-        error (Any): The error that occurred.
-
-    Returns:
-        str: The rendered HTML of the 404 error page.
     """
     return render_template('404.html')
 
