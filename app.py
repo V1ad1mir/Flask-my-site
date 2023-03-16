@@ -76,10 +76,8 @@ def scrape_all_urls():
     return page_contents
 
 
-
-
 def scrape_url_title(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=5)
     soup = BeautifulSoup(response.content, 'html.parser')
     title = soup.title.string.strip()
     return url, title
