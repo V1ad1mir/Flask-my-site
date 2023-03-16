@@ -42,7 +42,7 @@ def get_all_reviews():
                 # Calculate the average rating for the review
                 if row[5] > 0:
                     average_rating = row[4] / row[5]
-                    review['average_rating'] = '{:.2f}'.format(average_rating)
+                    review['average_rating'] = f"{average_rating:.2f}"
                 else:
                     review['average_rating'] = 0
                 reviews.append(review)
