@@ -69,7 +69,7 @@ def scrape_all_urls():
     page_contents = {}
     for url in urls:
         full_url = base_url + url
-        response = requests.get(full_url)
+        response = requests.get(full_url, timeout=5)
         soup = BeautifulSoup(response.content, 'html.parser')
         title = soup.title.string.strip()
         page_contents[full_url] = title
