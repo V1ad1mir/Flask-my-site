@@ -3,19 +3,19 @@ from datetime import datetime, date
 from random import shuffle
 import hashlib
 
-import requests
 from bs4 import BeautifulSoup
+import requests
 
 from flask import Flask, render_template, request, session, redirect, flash, url_for
 from flask_mysqldb import MySQL
-from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
-from mysql.connector import Error
-
-# add other python files
+# add other Python files
 import review
 import server_operations
+
+from mysql.connector import Error
 
 app = Flask(__name__)
 app.config.from_object('config.Config') #from config.py
