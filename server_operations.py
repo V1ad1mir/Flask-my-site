@@ -54,7 +54,7 @@ def get_my_travels(user_name):
     with connect() as conn:
             c = conn.cursor()
              # Retrieve the travel data for the user
-            if(user_name == 'admin'):
+            if user_name == 'admin':
                 c.execute("SELECT * FROM travel;")
             else:
                 c.execute("SELECT * FROM travel WHERE user_name = %s", (user_name,))
@@ -63,7 +63,7 @@ def get_my_travels(user_name):
             travels = []
             for row in data:
                 travel = {}
-                if(user_name == 'admin'):
+                if user_name == 'admin':
                     travel['id'] = row[0]
                     travel['user_name'] = row[1]
                 travel['country'] = row[2]
