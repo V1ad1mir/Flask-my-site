@@ -150,8 +150,12 @@ def query_results():
     query = request.form['query']
     try:
         server_operations.make_query(query)
-    except:
-        print('error')
+    except ValueError as ve:
+        print(f"ValueError occurred: {ve}")
+    except TypeError as te:
+        print(f"TypeError occurred: {te}")
+    except Exception as e:
+        print(f"Error occurred: {type(e).__name__} - {e}")
     return redirect('/admin')
 
 @app.route('/reviews', methods=['GET', 'POST'])
