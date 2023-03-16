@@ -54,8 +54,10 @@ def search():
 
 def perform_search(search_query):
     # Scrape the URLs and titles of all the pages
-    pages = scrape_all_urls()
+    pages = all_urls()
+    print(all_urls())
     results = [scrape_url_title(url) for url in pages]
+    print(results)
 
     # Filter the results based on the search query
     if search_query:
@@ -63,16 +65,13 @@ def perform_search(search_query):
 
     return results
 
-def scrape_all_urls():
+def all_urls():
     base_url = 'http://127.0.0.1:5000'
     urls = ['/reviews', '/question', '/photos', '/map']
-    page_contents = {}
+    page_contents = []
     for url in urls:
         full_url = base_url + url
-        response = requests.get(full_url, timeout=5)
-        soup = BeautifulSoup(response.content, 'html.parser')
-        title = soup.title.string.strip()
-        page_contents[full_url] = title
+        page_contents.append(full_url) 
     return page_contents
 
 

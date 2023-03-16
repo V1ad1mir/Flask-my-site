@@ -1,7 +1,7 @@
-import connect as c
+import connect as con
 
 def connect():
-    return c.connect()
+    return con.connect()
 
 def get_all_community_questions():
     with connect() as conn:

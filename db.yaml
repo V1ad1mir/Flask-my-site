@@ -3,4 +3,3 @@ mysql_user: 'root'
 mysql_password: '12345678'
 #mysql_password: ''
 mysql_db: 'mytravelapp_db'
-
