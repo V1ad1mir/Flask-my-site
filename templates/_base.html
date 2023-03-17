@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html id="my-theme">
+  <head>
+    {% if title %}
+     <title>{{title}}</title>
+    {%else%}
+    <title>Home</title>
+    {%endif%}
+  
   
   <link
     rel="icon"
@@ -27,6 +34,7 @@
   <script>
     document.documentElement.classList.remove("dark-theme");
   </script>
+</head>
   {% endif %}
   {% block content%}
   <header

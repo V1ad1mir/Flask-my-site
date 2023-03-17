@@ -165,6 +165,7 @@ def reviews():
     """
 
     # Handle form submission for adding a new review
+    page_title = 'Reviews'
     if request.method == 'POST':
         # Get the data from the form
         country = request.form.get('country', '')
@@ -184,6 +185,7 @@ def reviews():
         author = session.get('name', 'Anonymous')
         review.add_review(country, text, photo_filename, author)
         flash('Successfully reviewed')
+        
         return redirect(request.url)
 
     # Retrieve reviews from the database and sort/filter them
@@ -205,7 +207,7 @@ def reviews():
     if country_filter and country_filter != 'None':
         all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
 
-    return render_template('reviews.html', reviews=all_reviews)
+    return render_template('reviews.html', reviews=all_reviews, title = page_title)
 
 
     
@@ -245,13 +247,14 @@ def check_user():
 
 @app.route('/change_list', methods=['GET', 'POST'])    
 def change_list():
+    page_title = 'Change List'
     if 'name' in session:
         try:
             list_of_travels = server_operations.get_my_travels(session['name'])
             print(list_of_travels)
             return render_template('build_list.html',data=list_of_travels)
         except: ...
-    return render_template('build_list.html')
+    return render_template('build_list.html', title = page_title)
 
 
 @app.route('/question', methods=['GET', 'POST'])    
@@ -404,23 +407,28 @@ def delete_photo(filename):
 
 @app.route('/map')
 def map_page():
+    """
+    Page for displaying map of visited contries
+    """
+    title = "Map"
     try:
         map_html = review.create_map()._repr_html_()
     except Exception as e:
         # Handle exceptions more gracefully
         map_html = None
         app.logger.error(f"Error creating map: {e}")
-    return render_template('map.html', map=map_html)
+    return render_template('map.html', map=map_html, title=title)
     
 @app.route('/photos')
 def photos():
     """
     Renders a page displaying all the photos in the 'static/uploads' folder, randomly sorted.
     """
+    page_title = 'Photos'
     photo_folder = 'static/uploads'
     photo_files = os.listdir(photo_folder)
     shuffle(photo_files)
-    return render_template('photos.html', photos=photo_files)
+    return render_template('photos.html', photos=photo_files, title=page_title)
 
 @app.errorhandler(404)
 def page_not_found(error):
