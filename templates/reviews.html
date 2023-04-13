@@ -45,11 +45,9 @@
                   Rating: {{ review.average_rating }}
                   <form action="{{ url_for('rate_review', review_id=review.id) }}" method="POST">
                     <select name="rating">
-                      <option value="1">1 star</option>
-                      <option value="2">2 stars</option>
-                      <option value="3">3 stars</option>
-                      <option value="4">4 stars</option>
-                      <option value="5">5 stars</option>
+                      {% for i in range(1, 6) %}
+                  <option value="{{ i }}">{{ i }} stars</option>
+                {% endfor %}
                     </select>
                     <input class="blue_btn" type="submit" value="Rate">
                   </form>

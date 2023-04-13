@@ -1,17 +1,15 @@
+from flask import Flask,render_template,request,session,redirect,flash, url_for
+from flask_mysqldb import MySQL
 import os
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 from random import shuffle
 import hashlib
 
-from bs4 import BeautifulSoup
-import requests
 
-from flask import Flask, render_template, request, session, redirect, flash, url_for
-from flask_mysqldb import MySQL
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 
-# add other Python files
+#add other python files
 import review
 import server_operations
 
@@ -20,6 +18,9 @@ from mysql.connector import Error
 app = Flask(__name__)
 app.config.from_object('config.Config') #from config.py
 mysql = MySQL(app)
+
+
+
 
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
 def delete_review(review_id):
@@ -35,51 +36,6 @@ def delete_review(review_id):
     review.delete_review(review_id)
     return redirect(url_for('reviews'))
 
-
-@app.route('/search')
-def search():
-    # Get the search query from the URL parameters
-    search_query = request.args.get('q')
-
-    # If the search query is empty, redirect to the homepage
-    if not search_query:
-        return redirect(url_for('index'))
-
-    # Perform the search using the search_query
-    # and return the results as a list or dictionary
-    results = perform_search(search_query)
-
-    # Render the search results template with the search query and results
-    return render_template('search_results.html', search_query=search_query, results=results)
-
-def perform_search(search_query):
-    # Scrape the URLs and titles of all the pages
-    pages = all_urls()
-    print(all_urls())
-    results = [scrape_url_title(url) for url in pages]
-    print(results)
-
-    # Filter the results based on the search query
-    if search_query:
-        results = [result for result in results if search_query.lower() in result[1].lower()]
-
-    return results
-
-def all_urls():
-    base_url = 'http://127.0.0.1:5000'
-    urls = ['/reviews', '/question', '/photos', '/map']
-    page_contents = []
-    for url in urls:
-        full_url = base_url + url
-        page_contents.append(full_url) 
-    return page_contents
-
-
-def scrape_url_title(url):
-    response = requests.get(url, timeout=5)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    title = soup.title.string.strip()
-    return url, title
 
 def is_valid_image(photo)->bool:
     """
@@ -135,11 +91,12 @@ def generate_filtering_input(country_filter=None):
 
 @app.route('/admin')
 def admin_page():
+    #reviews, , trips, users = review.get_all_data()
     users = server_operations.get_all_users()
     community_questions = server_operations.get_all_community_questions()
-    posts= server_operations.get_all_reviews()
+    reviews = server_operations.get_all_reviews()
     travels = server_operations.get_my_travels('admin')
-    return render_template('admin.html',users=users,questions=community_questions,posts=posts,travels=travels)
+    return render_template('admin.html',users=users,questions=community_questions,posts=reviews,travels=travels)
     
 
 @app.route('/query', methods=['POST'])
@@ -147,12 +104,8 @@ def query_results():
     query = request.form['query']
     try:
         server_operations.make_query(query)
-    except ValueError as ve:
-        print(f"ValueError occurred: {ve}")
-    except TypeError as te:
-        print(f"TypeError occurred: {te}")
-    except Exception as e:
-        print(f"Error occurred: {type(e).__name__} - {e}")
+    except:
+        print('error')
     return redirect('/admin')
 
 @app.route('/reviews', methods=['GET', 'POST'])
@@ -160,17 +113,25 @@ def reviews():
     """
     View function for the /reviews route.
 
+    If a POST request is received, retrieves the country name, review text, and photo
+    from the submitted form, saves the photo to the UPLOAD_FOLDER, and adds a new
+    review to the database.
+
+    Retrieves all the reviews from the database and sorts them based on the sort option
+    specified in the request args. If a country filter is also specified, filters the
+    reviews by the country. Renders the 'reviews.html' template and passes the reviews
+    data to it.
+
     Returns:
         A Flask response object containing the rendered template or an error message.
     """
 
     # Handle form submission for adding a new review
-    page_title = 'Reviews'
     if request.method == 'POST':
         # Get the data from the form
         country = request.form.get('country', '')
         text = request.form.get('review', '')
-        photo = request.files.get('photo')
+        photo = request.files.get('photo', None)
 
         # Validate the input
         if photo and not is_valid_image(photo):
@@ -178,14 +139,15 @@ def reviews():
             return redirect(request.url)
 
         # Save the photo to the upload folder
-        photo_filename = secure_filename(photo.filename) if photo else None
-        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename)) if photo else None
+        photo_filename = None
+        if photo:
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
 
         # Save the review to the database
         author = session.get('name', 'Anonymous')
         review.add_review(country, text, photo_filename, author)
         flash('Successfully reviewed')
-        
         return redirect(request.url)
 
     # Retrieve reviews from the database and sort/filter them
@@ -193,22 +155,20 @@ def reviews():
     country_filter = request.args.get('country_filter', '')
     all_reviews = server_operations.get_all_reviews()
     
-    # Sort the reviews
-    sort_keys = {
-        'date_asc': 'date',
-        'date_desc': 'date',
-        'name_asc': 'country',
-        'name_desc': 'country'
-    }
-    if sort_option in sort_keys:
-        all_reviews.sort(key=lambda x: x[sort_keys[sort_option]], reverse=sort_option.endswith('_desc'))
+    if request.method == 'GET':
+        if sort_option == 'date_asc':
+            all_reviews.sort(key=lambda x: x['date'])
+        elif sort_option == 'date_desc':
+            all_reviews.sort(key=lambda x: x['date'], reverse=True)
+        elif sort_option == 'name_asc':
+            all_reviews.sort(key=lambda x: x['country'])
+        elif sort_option == 'name_desc':
+            all_reviews.sort(key=lambda x: x['country'], reverse=True)
 
-    # Filter the reviews
-    if country_filter and country_filter != 'None':
-        all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
-
-    return render_template('reviews.html', reviews=all_reviews, title = page_title)
-
+        if country_filter != 'None':
+            all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
+            
+    return render_template('reviews.html', reviews=all_reviews)
 
     
 @app.route('/review/<int:review_id>/rate', methods=['POST'])
@@ -247,14 +207,13 @@ def check_user():
 
 @app.route('/change_list', methods=['GET', 'POST'])    
 def change_list():
-    page_title = 'Change List'
     if 'name' in session:
         try:
             list_of_travels = server_operations.get_my_travels(session['name'])
             print(list_of_travels)
             return render_template('build_list.html',data=list_of_travels)
         except: ...
-    return render_template('build_list.html', title = page_title)
+    return render_template('build_list.html')
 
 
 @app.route('/question', methods=['GET', 'POST'])    
@@ -407,28 +366,23 @@ def delete_photo(filename):
 
 @app.route('/map')
 def map_page():
-    """
-    Page for displaying map of visited contries
-    """
-    title = "Map"
     try:
         map_html = review.create_map()._repr_html_()
     except Exception as e:
         # Handle exceptions more gracefully
         map_html = None
         app.logger.error(f"Error creating map: {e}")
-    return render_template('map.html', map=map_html, title=title)
+    return render_template('map.html', map=map_html)
     
 @app.route('/photos')
 def photos():
     """
     Renders a page displaying all the photos in the 'static/uploads' folder, randomly sorted.
     """
-    page_title = 'Photos'
     photo_folder = 'static/uploads'
     photo_files = os.listdir(photo_folder)
     shuffle(photo_files)
-    return render_template('photos.html', photos=photo_files, title=page_title)
+    return render_template('photos.html', photos=photo_files)
 
 @app.errorhandler(404)
 def page_not_found(error):
