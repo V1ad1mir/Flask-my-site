@@ -1,0 +1,19 @@
+project here:
+python code 2022/flask-ajax
+
+
+<h1>{{ name }}</h1>
+    <button id="click">Click me for Ajax</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+      $('#click').click(function() {
+          $.ajax({
+          type: 'GET',
+          url: '/data',
+        success: function(response) {
+            alert(response)
+              //$('h1').text(response)
+      }
+      })
+    })
+    </script>

@@ -2,11 +2,10 @@ from flask import Flask,render_template,request,session,redirect,flash, url_for
 from flask_mysqldb import MySQL
 import os
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
-
+from random import shuffle
 import hashlib
-
-from routes import main_bp
 
 
 #add other python files
@@ -21,13 +20,16 @@ mysql = MySQL(app)
 
 ############################################################################
 
-app.register_blueprint(main_bp)
-
-
 @app.route('/reviews/delete/<int:review_id>', methods=['POST'])
-def delete_review(review_id:int):
+def delete_review(review_id):
     """
     Delete a review with the given review_id.
+
+    Args:
+        review_id (int): The ID of the review to be deleted.
+
+    Returns:
+        A redirect to the reviews page.
     """
     review.delete_review(review_id)
     return redirect(url_for('reviews'))
@@ -58,7 +60,31 @@ def is_valid_image(photo)->bool:
     
     return True  # the file is valid
 
+def generate_sorting_dropdown(selected_sort_option=None):
+    """
+    This module contains functions for generating HTML code to display and interact with reviews data.
+    """
+    options = [
+        ('', 'Select sort option'),
+        ('date_asc', 'Date (oldest first)'),
+        ('date_desc', 'Date (newest first)'),
+        ('name_asc', 'Name (A-Z)'),
+        ('name_desc', 'Name (Z-A)'),
+    ]
+    html = '<label for="sort_by">Sort by:</label>'
+    html += '<select name="sort_by" onchange="this.form.submit()">'
+    for value, label in options:
+        selected = 'selected' if value == selected_sort_option else ''
+        html += f'<option value="{value}" {selected}>{label}</option>'
+    html += '</select>'
+    return html
 
+
+def generate_filtering_input(country_filter=None):
+    html = '<label for="country_filter">Filter by country:</label>'
+    html += f'<input type="text" name="country_filter" value="{country_filter}" placeholder="Enter country name">'
+    html += '<button type="submit">Filter</button>'
+    return html
 
 
 @app.route('/admin')
@@ -84,6 +110,18 @@ def query_results():
 def reviews():
     """
     View function for the /reviews route.
+
+    If a POST request is received, retrieves the country name, review text, and photo
+    from the submitted form, saves the photo to the UPLOAD_FOLDER, and adds a new
+    review to the database.
+
+    Retrieves all the reviews from the database and sorts them based on the sort option
+    specified in the request args. If a country filter is also specified, filters the
+    reviews by the country. Renders the 'reviews.html' template and passes the reviews
+    data to it.
+
+    Returns:
+        A Flask response object containing the rendered template or an error message.
     """
 
     # Handle form submission for adding a new review
@@ -127,8 +165,7 @@ def reviews():
 
         if country_filter != 'None':
             all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
-    
-          
+            
     return render_template('reviews.html', reviews=all_reviews)
 
     
@@ -237,6 +274,7 @@ def add_community_question():
     return redirect('/question')
     
  
+    
 @app.route('/', methods=['GET', 'POST'])
 def index():
     '''
@@ -309,6 +347,13 @@ def register():
 def delete_photo(filename):
     """
     This function deletes a photo with a given filename from the application's storage. 
+    It first checks if the file exists in the upload folder, and if it does, it removes it from the folder. 
+    It then displays a success or error message using Flask's flash() function and redirects the user to the photos page.
+
+    Args:
+        filename: str - the name of the file to be deleted
+    Returns:
+        redirect to the photos page
     """
     if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -327,6 +372,15 @@ def map_page():
         app.logger.error(f"Error creating map: {e}")
     return render_template('map.html', map=map_html)
     
+@app.route('/photos')
+def photos():
+    """
+    Renders a page displaying all the photos in the 'static/uploads' folder, randomly sorted.
+    """
+    photo_folder = 'static/uploads'
+    photo_files = os.listdir(photo_folder)
+    shuffle(photo_files)
+    return render_template('photos.html', photos=photo_files)
 
 @app.errorhandler(404)
 def page_not_found(error):

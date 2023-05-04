@@ -78,11 +78,6 @@
   }
 
   .text3d{
-      
-      transform: translate(50%,-50%);
-      
-      font-size: 12em;
-      font-weight: 700;
       text-shadow: 1px 1px 1px #919191,
           1px 2px 1px #919191,
           1px 3px 1px #919191,
@@ -143,20 +138,10 @@
   color:var(--secondary-color) !important;
   transform:scale(1.05)
   }
-
-.logo svg:hover{
-  transform:scale(1.2)
-}
-
   
   .ask_for_help:hover,.btn_build_map:hover,.blue_btn:hover {
   box-shadow:rgba(0,0,0,0.15) 0 2px 8px
   }
-  
-  /* .author_text {
-  float:right;
-  margin-right:15px
-  } */
   
   .big_text {
   color:var(--primary-color);
@@ -177,7 +162,6 @@
   
   .blue_btn,.ask_for_help,.btn_build_map,.dropdown .dropbtn,.menu li a:hover {
   border-radius:12px;
-  
   transition:all .5s ease-out
   }
   
@@ -195,9 +179,35 @@
   margin:0 15%;
   }
 
-  .shadow{
-    box-shadow: 0 0 5px var(--primary-color);
+  .header{
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    background-color: var(--primary-color);
   }
+  
+
+#center_block{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 180px;
+}
+
+  .header a{
+    scale: 0.3;
+    width: 40px;
+  }
+
+  .header a img{
+    margin: 0;
+    padding: 0;
+  }
+
   
   .div3,.terms,.dropdown:hover .dropdown-content,.review-list footer span {
   display:block
@@ -366,11 +376,9 @@
   }
 
   .logo-text{
-    font-size: 6em;
+    font-size: 4.5em;
   }
 
-
-  
   .logo,.review-list footer h3 {
   float:left
   }
@@ -386,25 +394,29 @@
   .menu li {
   float:left;
   list-style:none;
-  padding: 0.05vmax 0.5vmax;
-  margin: 0 1.1vmax;
+  font-size: 30px;
+  }
+
+  #little_menu{
+    display: flex;
+    justify-content: space-between;
   }
 
 
   .menu li a {
   color:var(--secondary-color);
-  display:block;
-  font:bold 120% 'trebuchet ms',sans-serif;
-  height:20px;
-  padding: 0.8vmax 1.4vmax;
+  font:bold 'trebuchet ms',sans-serif;
+  /*  dynamically resize text  */
+  font-size: 20px;
+  font-size: 1.6vw;
+  padding: 0.8vmax 1.3vmax;
   }
   
   .menu li a:hover {
-  box-shadow:rgba(0,0,0,0.16) 0 3px 6px,rgba(0,0,0,0.23) 0 3px 6px;
-  color:#fff!important
+  color:var(--tertiary-color);
   }
   
-  .menu1_block,.bottom_block {
+  .bottom_block {
   background-color:var(--primary-color);
   margin: 0;
   }
@@ -606,24 +618,20 @@ table{
   padding:0;
   background-color:var(--secondary-color);
   color:var(--primary-color);
-  display:flex;
-  flex-direction:column;
   font-family:"Custom Font",Arial,Helvetica,sans-serif;
-  min-height:100vh;
   text-align:center;
   word-spacing:7px;
   text-decoration:none;
   }
   
-  div.center {
-    text-align: center;
-    margin-left:auto;
-    margin-right:auto;
-    padding-top:10px;
-    width:100%;
+  .center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
-  .logo svg:hover{
+  .img_logo{
     fill: #659DBD;
   }
   
@@ -650,79 +658,9 @@ table{
   display:inline-block
   }
   
-  @media (max-width: 1050px) {
-  .logo{
-    float: none;
-    width: 20%;
-    margin: -5px;
-    padding: -5px;
-  }
-
-  .logo-text{
-    margin-top:-5px;
-  }
-
-  .content {
-    margin:0 5%;
-    }
-
-
-  header span.form form{
-    display: inline block;
-    margin: 0.5em;
-  }
-
-  header .form{
-    float: none;
-  }
-  
-  header{
-    display: inline-block;
-    padding-bottom: 20px;
-  }
-
-
-  
-  .logo {
-  display:block;
-  margin-left:auto;
-  margin-right:auto
-  }
-  
-  .logo::after {
-  content:"\a";
-  white-space:pre
-  }
-  
-  .logo_image {
-  margin-left:auto;
-  margin-right:auto;
-  padding-top:10px;
-  width:100%
-  }
-  
-  .menu li {
-  padding:0
-  }
-  
-  .menu li a {
-  color:var(--secondary-color);
-  font:bold 120% 'trebuchet ms',sans-serif;
-  height:30px;
-  padding:3px 9px;
-  
-  }
-  
-  .menu2_block,.div3 {
-  text-align:match-parent
-  }
-  
-  .signin * {
-  display:inline
-  }
-  
-  h1 {
-  font-size:35px
+  @media (max-width: 1350px) {
+  .menu li a{
+   /*  */
   }
   }
 
