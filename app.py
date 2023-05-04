@@ -36,12 +36,6 @@ def delete_review(review_id:int):
 def is_valid_image(photo)->bool:
     """
     Checks whether a file is a valid image file.
-
-    Parameters:
-        photo (werkzeug.datastructures.FileStorage): The file to check.
-
-    Returns:
-        bool: True if the file is a valid image file, False otherwise.
     """
     if not photo:
         return False  # no file was provided
