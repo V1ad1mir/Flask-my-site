@@ -127,8 +127,6 @@ def reviews():
 
         if country_filter != 'None':
             all_reviews = [r for r in all_reviews if r['country'].lower().startswith(country_filter.lower())]
-    
-          
     return render_template('reviews.html', reviews=all_reviews)
 
     
@@ -259,9 +257,6 @@ def register():
     inputs are valid, the user's password is hashed and saved to the database,
     and the user is redirected to the home page. Otherwise, the form is
     redisplayed with error messages.
-
-    Returns:
-        Rendered HTML template for user registration.
     """
     if request.method == 'POST':
         form = request.form
